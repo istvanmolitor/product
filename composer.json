@@ -1,0 +1,28 @@
+{
+    "name": "istvanmolitor/product",
+    "description": "Product",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Molitor István",
+            "email": "istvanmolitor@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {
+        "molitor/currency": "*@dev"
+    },
+    "autoload": {
+        "psr-4": {
+            "Molitor\\Product\\": "src/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Molitor\\Product\\Providers\\ProductServiceProvider"
+            ]
+        }
+    }
+}
