@@ -3,8 +3,6 @@
 namespace Molitor\Product\Repositories;
 
 use Illuminate\Database\Eloquent\Collection;
-use Molitor\File\Models\ImageFile;
-use Molitor\File\Repositories\ImageFileRepositoryInterface;
 use Molitor\Product\Models\Product;
 use Molitor\Product\Models\ProductImage;
 
@@ -13,9 +11,7 @@ class ProductImageRepository implements ProductImageRepositoryInterface
     private ProductImage $productImage;
 
 
-    public function __construct(
-        private ImageFileRepositoryInterface $imageFileRepository
-    )
+    public function __construct()
     {
         $this->productImage = new ProductImage();
     }
@@ -92,27 +88,13 @@ class ProductImageRepository implements ProductImageRepositoryInterface
         return $productImage;
     }
 
-    public function download(ProductImage $productImage): bool
-    {
-        if ($productImage->file_id === null && $productImage->url) {
-            $file = $this->imageFileRepository->storeUrl($productImage->url);
-            if ($file) {
-                $productImage->file_id = $file->id;
-                $productImage->save();
-                return true;
-            }
-        }
-        return false;
-    }
-
-    public function addImageFile(Product $product, ImageFile $imageFile): ProductImage
+    public function addImageFile(Product $product): ProductImage
     {
         $productImage = new ProductImage();
         $productImage->product_id = $product->id;
         $productImage->url = null;
         $productImage->sort = 0;
-        $productImage->title = $imageFile->name;
-        $productImage->file_id = $imageFile->id;
+        $productImage->title = '';
 
         $productImage->save();
 
@@ -133,18 +115,5 @@ class ProductImageRepository implements ProductImageRepositoryInterface
             $productImage->delete();
         }
         return $this;
-    }
-
-    public function getSrc(?ProductImage $productImage): ?string
-    {
-        if (!$productImage) {
-            return null;
-        }
-        /** @var ImageFile $file */
-        $file = $productImage->file;
-        if ($file) {
-            return $file->getUrl();
-        }
-        return $productImage->url;
     }
 }

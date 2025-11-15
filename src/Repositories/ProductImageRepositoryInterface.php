@@ -27,13 +27,9 @@ interface ProductImageRepositoryInterface
 
     public function saveUrl(Product $product, string $url, string $title = null): ProductImage;
 
-    public function download(ProductImage $productImage): bool;
-
-    public function addImageFile(Product $product, ImageFile $imageFile): ProductImage;
+    public function addImageFile(Product $product): ProductImage;
 
     public function saveImages(Product $product, array $urls): self;
 
     public function clearImages(Product $product): self;
-
-    public function getSrc(?ProductImage $productImage): ?string;
 }
