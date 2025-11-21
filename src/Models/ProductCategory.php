@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Molitor\Product\Models;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Molitor\Language\Models\TranslatableModel;
@@ -38,5 +37,11 @@ class ProductCategory extends TranslatableModel
     public function productCategories(): HasMany
     {
         return $this->hasMany(ProductCategory::class, 'parent_id');
+    }
+
+    public function scopeCategory($query, ProductCategory $category)
+    {
+        return $query->where('left_value', '>=', $category->left_value)
+            ->where('right_value', '<=', $category->right_value);
     }
 }

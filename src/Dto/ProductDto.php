@@ -64,6 +64,11 @@ class ProductDto
         return $this;
     }
 
+    public function getImages(): array
+    {
+        return $this->images;
+    }
+
     public function addAttribute(ProductAttributeDto $attribute): self
     {
         $this->attributes[] = $attribute;
@@ -79,5 +84,10 @@ class ProductDto
     {
         $this->categories[] = $category;
         return $this;
+    }
+
+    public function getCategories(): array
+    {
+        return $this->categories;
     }
 }

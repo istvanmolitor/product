@@ -9,10 +9,9 @@ class ProductCategoryDto
 {
     use TranslatableDto;
 
-    public string $id = '';
-
+    public int|null $id = null;
+    public string|null $source = null;
     public ProductCategoryPathDto $path;
-
     public Multilingual $description;
 
     public function __construct()

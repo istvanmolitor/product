@@ -9,7 +9,7 @@ class ProductCategoryPathDto
     public string $separator = '/';
     protected array $items = [];
 
-    public function addProductCategory(Multilingual $item): self
+    public function addProductCategory(Multilingual $item): static
     {
         $this->items[] = $item;
         return $this;
@@ -25,14 +25,60 @@ class ProductCategoryPathDto
         return count($this->items);
     }
 
-    public function get($language): string
+    public function setLength(int $length): bool
     {
-        return implode($this->separator, array_map(fn($productCategory) => $productCategory->get($language), $this->items));
+        if($length < 1) {
+            return false;
+        }
+
+        $oldLength = $this->getLength();
+        if($length === $oldLength) {
+            return false;
+        }
+        if($length > $oldLength) {
+            for($i = $this->getLength(); $i < $length; $i++) {
+                $this->addItem();
+            }
+        }
+        else {
+            $this->items = array_slice($this->items, 0, $length);
+        }
+        return true;
     }
 
-    public function __get($name): string
+    public function setArrayPath(string $language, array $path): bool
     {
-        return $this->get($name);
+        $length = count($path);
+        if($length === 0) {
+            return false;
+        }
+
+        if($length > $this->getLength()) {
+            $this->setLength($length);
+        }
+        foreach ($path as $index => $item) {
+            $this->items[$index]->set($language, $item);
+        }
+        return true;
+    }
+
+    public function getArrayPath(string $language): array
+    {
+        $path = [];
+        foreach ($this->items as $item) {
+            $path[] = $item->get($language);
+        }
+        return $path;
+    }
+
+    public function get($language): string
+    {
+        return implode($this->separator, $this->getArrayPath($language));
+    }
+
+    public function __get($language): string
+    {
+        return $this->get($language);
     }
 
     public function getItem(int $index): Multilingual|null
@@ -47,20 +93,13 @@ class ProductCategoryPathDto
         return $item;
     }
 
-    public function set(string $language, string $path): void
+    public function setPath(string $language, string $path): void
     {
-        $exploded = explode($this->separator, $path);
-        foreach ($exploded as $index => $item) {
-            $productCategoryDto = $this->getItem($index);
-            if(!$productCategoryDto) {
-                $productCategoryDto = $this->addItem();
-            }
-            $productCategoryDto->set($language, $item);
-        }
+        $this->setArrayPath($language, explode($this->separator, $path));
     }
 
     public function __set(string $language, string $path): void
     {
-        $this->set($language, $path);
+        $this->setPath($language, $path);
     }
 }
