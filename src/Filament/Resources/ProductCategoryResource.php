@@ -73,6 +73,9 @@ class ProductCategoryResource extends Resource
                     ->label(__('product::common.name'))
                     ->required()
                     ->maxLength(255),
+                Forms\Components\RichEditor::make('description')
+                    ->label(__('product::common.description'))
+                    ->columnSpanFull(),
             ]),
         ])->columns(1);
     }
