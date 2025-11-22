@@ -84,15 +84,12 @@ class ProductCategoryResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('id')
-                    ->label(__('product::common.id'))
-                    ->sortable(),
                 Tables\Columns\ImageColumn::make('image')
                     ->label(__('product::common.image'))
                     ->size(100)
                     ->disk('public')
                     ->toggleable(),
-                Tables\Columns\TextColumn::make('name')
+                Tables\Columns\TextColumn::make('translation.name')
                     ->label(__('product::common.name'))
                     ->searchable()
                     ->sortable(),

@@ -53,4 +53,9 @@ class ProductCategory extends TranslatableModel
         return $query->where('left_value', '>=', $category->left_value)
             ->where('right_value', '<=', $category->right_value);
     }
+
+    public function getSrc(): string|null
+    {
+        return $this->image ? asset('storage/' . ltrim($this->image, '/')) : null;
+    }
 }
