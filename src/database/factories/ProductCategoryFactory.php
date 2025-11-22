@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Molitor\Product\database\factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Str;
 use Molitor\Product\Models\ProductCategory;
 
 class ProductCategoryFactory extends Factory
@@ -23,15 +24,17 @@ class ProductCategoryFactory extends Factory
      */
     public function definition(): array
     {
+        $name = $this->faker->unique()->words(2, true);
         return [
             'parent_id' => 0,
             'left_value' => null,
             'right_value' => null,
             'image' => null,
             'image_url' => null,
+            'slug' => Str::slug($name) . '-' . $this->faker->unique()->numberBetween(1000, 9999),
 
             // Translatable fields (handled by TranslatableModel)
-            'name' => $this->faker->unique()->words(2, true),
+            'name' => $name,
 
             'description' => $this->faker->sentence(10),
         ];

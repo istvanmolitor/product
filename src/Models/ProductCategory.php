@@ -30,6 +30,7 @@ class ProductCategory extends TranslatableModel
         'right_value',
         'image',
         'image_url',
+        'slug',
     ];
 
     public function __toString(): string

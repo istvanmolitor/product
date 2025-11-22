@@ -35,4 +35,5 @@ return [
     'product_images' => 'Termék képek',
     'image_data' => 'Képek adatai',
     'image' => 'Kép',
+    'slug' => 'Elérés',
 ];

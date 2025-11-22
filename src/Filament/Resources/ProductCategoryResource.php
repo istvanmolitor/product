@@ -52,6 +52,11 @@ class ProductCategoryResource extends Resource
                 )
                 ->default(0)
                 ->required(),
+            Forms\Components\TextInput::make('slug')
+                ->label(__('product::common.slug'))
+                ->required()
+                ->unique(ignoreRecord: true)
+                ->maxLength(255),
             Forms\Components\FileUpload::make('image')
                 ->label(__('product::common.product_category_image'))
                 ->image()
@@ -90,6 +95,10 @@ class ProductCategoryResource extends Resource
                     ->sortable(),
                 Tables\Columns\TextColumn::make('parent.name')
                     ->label(__('product::common.parent'))
+                    ->toggleable(),
+                Tables\Columns\TextColumn::make('slug')
+                    ->label(__('product::common.slug'))
+                    ->searchable()
                     ->toggleable(),
             ])
             ->filters([])

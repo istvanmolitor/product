@@ -80,8 +80,9 @@ class ProductResource extends Resource
                                 ->maxLength(255)
                                 ->unique(ignoreRecord: true),
                             Forms\Components\TextInput::make('slug')
-                                ->label('Slug')
-                                ->helperText('Ha üresen hagyod, automatikusan generáljuk a név és a cikkszám alapján.')
+                                ->label(__('product::common.slug'))
+                                ->required()
+                                ->unique(ignoreRecord: true)
                                 ->maxLength(255),
                             TranslatableFields::schema([
                                 Forms\Components\TextInput::make('name')

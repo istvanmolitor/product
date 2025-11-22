@@ -19,6 +19,7 @@ class CreateProductCategoriesTable extends Migration
             $table->unsignedBigInteger('left_value')->nullable();
             $table->unsignedBigInteger('right_value')->nullable();
 
+            $table->string('slug')->unique();
             $table->string('image')->nullable();
             $table->string('image_url')->nullable();
 
