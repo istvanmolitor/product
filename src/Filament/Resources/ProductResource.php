@@ -15,8 +15,7 @@ use Filament\Schemas\Schema;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Support\Facades\Gate;
-use Molitor\Currency\Repositories\CurrencyRepository;
-use Molitor\Currency\Repositories\CurrencyRepositoryInterface;
+use Molitor\Currency\Filament\Components\EnabledCurrencySelect;
 use Molitor\Language\Filament\Components\TranslatableFields;
 use Molitor\Language\Repositories\LanguageRepository;
 use Molitor\Language\Repositories\LanguageRepositoryInterface;
@@ -57,8 +56,6 @@ class ProductResource extends Resource
         $languageRepository = app(LanguageRepositoryInterface::class);
         /** @var ProductUnitRepository $productUnitRepository */
         $productUnitRepository = app(ProductUnitRepositoryInterface::class);
-        /** @var CurrencyRepository $currencyRepository */
-        $currencyRepository = app(CurrencyRepositoryInterface::class);
         /** @var ProductCategoryRepository $productCategoryRepository */
         $productCategoryRepository = app(ProductCategoryRepositoryInterface::class);
         /** @var ProductFieldRepository $roductFieldRepository */
@@ -114,12 +111,8 @@ class ProductResource extends Resource
                                         ->minValue(0)
                                         ->maxValue(99999999999)
                                         ->required(),
-                                    Forms\Components\Select::make('currency_id')
+                                    EnabledCurrencySelect::make('currency_id')
                                         ->label(__('product::common.currency'))
-                                        ->relationship('currency', 'code')
-                                        ->default($currencyRepository->getDefaultId())
-                                        ->searchable()
-                                        ->preload()
                                         ->required(),
                                 ]),
                         ]),
