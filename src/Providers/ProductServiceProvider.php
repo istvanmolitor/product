@@ -3,6 +3,9 @@
 namespace Molitor\Product\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Facades\Event;
+use Molitor\Currency\Events\DefaultCurrencyChanged;
+use Molitor\Product\Listeners\DefaultCurrencyChangedListener;
 use Molitor\Product\Repositories\ProductCategoryProductRepository;
 use Molitor\Product\Repositories\ProductCategoryProductRepositoryInterface;
 use Molitor\Product\Repositories\ProductCategoryRepository;
@@ -26,6 +29,11 @@ class ProductServiceProvider extends ServiceProvider
     {
         $this->loadMigrationsFrom(__DIR__ . '/../database/migrations');
         $this->loadTranslationsFrom(__DIR__ . '/../../resources/lang', 'product');
+
+        Event::listen(
+            DefaultCurrencyChanged::class,
+            DefaultCurrencyChangedListener::class
+        );
     }
 
     public function register()
