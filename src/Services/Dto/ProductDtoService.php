@@ -77,6 +77,5 @@ class ProductDtoService
         $product->price = $productDto->price;
         $product->slug = $productDto->slug;
         $product->product_unit_id = $this->productUnitDtoService->saveDto($productDto->productUnit)->id;
-        $product->currency_id = $this->currencyRepository->getByCode($productDto->currency)?->id;
     }
 }

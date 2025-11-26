@@ -25,7 +25,6 @@ abstract class BaseProductDtoService
         $model->price = $productDto->price;
         $model->url = $productDto->url;
         $model->product_unit_id = $this->productUnitDtoService->saveDto($productDto->productUnit)->id;
-        $model->currency_id = $this->currencyRepository->getByCode($productDto->currency)?->id;
     }
 
     protected function updateModelImages(Model $productModel, string $imagesField, string $productIdField, ProductDto $productDto): void

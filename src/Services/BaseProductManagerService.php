@@ -70,7 +70,6 @@ abstract class BaseProductManagerService
             'sku' => $productDto->sku,
             'slug' => $productDto->slug,
             'price' => $productDto->price,
-            'currency_id' => $this->getCurrencyId($productDto->currency),
             'product_unit_id' => $this->getProductUnitId($productDto->productUnit),
         ]);
         $model->save();

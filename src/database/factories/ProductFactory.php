@@ -32,7 +32,6 @@ class ProductFactory extends Factory
             'description' => $this->faker->text(),
             'sku' => $this->faker->unique()->ean13(),
             'price' => $this->faker->randomFloat(2, 0, 10000),
-            'currency_id' => Currency::whereIn('code', ['HUF', 'USD', 'EUR'])->inRandomOrder()->value('id'),
             'product_unit_id' => ProductUnit::inRandomOrder()->value('id'),
         ];
     }

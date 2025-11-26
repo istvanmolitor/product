@@ -49,7 +49,6 @@ class Product extends TranslatableModel
         'sku',
         'slug',
         'price',
-        'currency_id',
         'product_unit_id',
     ];
 
@@ -75,11 +74,6 @@ class Product extends TranslatableModel
     public function productAttributes(): HasMany
     {
         return $this->hasMany(ProductAttribute::class, 'product_id');
-    }
-
-    public function currency(): BelongsTo
-    {
-        return $this->belongsTo(Currency::class, 'currency_id');
     }
 
     public function productUnit(): BelongsTo

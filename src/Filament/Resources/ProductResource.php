@@ -16,6 +16,7 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Support\Facades\Gate;
 use Molitor\Currency\Filament\Components\EnabledCurrencySelect;
+use Molitor\Currency\Repositories\CurrencyRepositoryInterface;
 use Molitor\Language\Filament\Components\TranslatableFields;
 use Molitor\Language\Repositories\LanguageRepository;
 use Molitor\Language\Repositories\LanguageRepositoryInterface;
@@ -62,6 +63,8 @@ class ProductResource extends Resource
         $productFieldRepository = app(ProductFieldRepositoryInterface::class);
         /** @var ProductFieldOptionRepository $productFieldOptionRepository */
         $productFieldOptionRepository = app(ProductFieldOptionRepositoryInterface::class);
+        /** @var CurrencyRepositoryInterface $currencyRepository */
+        $currencyRepository = app(CurrencyRepositoryInterface::class);
 
         return $schema->components([
             Tabs::make('Tabs')
@@ -107,12 +110,10 @@ class ProductResource extends Resource
                                 ->schema([
                                     Forms\Components\TextInput::make('price')
                                         ->label(__('product::common.price'))
+                                        ->suffix($currencyRepository->getDefault()->code)
                                         ->numeric()
                                         ->minValue(0)
                                         ->maxValue(99999999999)
-                                        ->required(),
-                                    EnabledCurrencySelect::make('currency_id')
-                                        ->label(__('product::common.currency'))
                                         ->required(),
                                 ]),
                         ]),

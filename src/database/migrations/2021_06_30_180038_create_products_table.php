@@ -28,9 +28,6 @@ class CreateProductsTable extends Migration
 
                 $table->decimal('price', 11)->nullable();
 
-                $table->unsignedBigInteger('currency_id');
-                $table->foreign('currency_id')->references('id')->on('currencies');
-
                 $table->softDeletes();
                 $table->timestamps();
             }

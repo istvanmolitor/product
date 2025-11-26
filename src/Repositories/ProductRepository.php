@@ -41,14 +41,12 @@ class ProductRepository implements ProductRepositoryInterface
         if ($product) {
             return $product;
         }
-        $currency = $this->currencyRepository->getByCode('HUF');
         $productUnit = $this->productUnitRepository->getDefault();
         return $this->product->create(
             [
                 'active' => false,
                 'sku' => $sku,
                 'name' => $name,
-                'currency_id' => $currency->id,
                 'product_unit_id' => $productUnit->id,
             ]
         );
