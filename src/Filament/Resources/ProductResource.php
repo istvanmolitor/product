@@ -250,7 +250,7 @@ class ProductResource extends Resource
                     ->sortable(),
                 Tables\Columns\TextColumn::make('price')
                     ->label(__('product::common.price'))
-                    ->formatStateUsing(fn ($record) => $record->price . ' ' . $record->currency->code)
+                    ->formatStateUsing(fn ($record) => (string)$record->getPrice())
                     ->sortable(),
             ])
             ->filters([

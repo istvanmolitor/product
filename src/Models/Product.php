@@ -12,7 +12,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Str;
-use Molitor\Currency\Models\Currency;
+use Molitor\Currency\Services\Price;
 use Molitor\Language\Models\TranslatableModel;
 use Molitor\Product\database\factories\ProductFactory;
 
@@ -53,8 +53,19 @@ class Product extends TranslatableModel
     ];
 
     protected $casts = [
+        'price' => 'float',
         'active' => 'boolean',
     ];
+
+    public function setPrice(Price $price): void
+    {
+        $this->price = $price->exchangeDefault()->price;
+    }
+
+    public function getPrice(): Price
+    {
+        return new Price($this->price, null);
+    }
 
     public function __toString(): string
     {
