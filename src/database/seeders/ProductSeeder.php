@@ -82,5 +82,8 @@ class ProductSeeder extends Seeder
         });
 
         Product::factory(100)->create();
+
+        // Seed product images for the generated products
+        $this->call(ProductImageSeeder::class);
     }
 }
