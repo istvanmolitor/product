@@ -49,23 +49,8 @@ class ProductSeeder extends Seeder
             return;
         }
 
-        $data = require_once(__DIR__ . '/data/product_fields.php');
-
-        foreach ($data as $productFieldData) {
-            $productField = new ProductField();
-            foreach ($productFieldData['name'] as $locale => $name) {
-                $productField->setAttributeTranslation('name', $name, $locale);
-            }
-            $productField->save();
-            foreach ($productFieldData['options'] as $option) {
-                $productFieldOption = new ProductFieldOption();
-                $productFieldOption->product_field_id = $productField->id;
-                foreach ($option['name'] as $locale => $name) {
-                    $productFieldOption->setAttributeTranslation('name', $name, $locale);
-                }
-                $productFieldOption->save();
-            }
-        }
+        // Seed product fields and options in a dedicated seeder
+        $this->call(ProductFieldSeeder::class);
 
         $roots = ProductCategory::factory()->count(5)->create();
         $roots->each(function (ProductCategory $root) {
@@ -83,6 +68,8 @@ class ProductSeeder extends Seeder
 
         Product::factory(100)->create();
 
+        // After products are created, randomly assign attributes and seed images
+        $this->call(ProductAttributeSeeder::class);
         // Seed product images for the generated products
         $this->call(ProductImageSeeder::class);
     }
