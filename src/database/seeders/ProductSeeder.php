@@ -45,6 +45,9 @@ class ProductSeeder extends Seeder
             $unit->save();
         }
 
+        // Seed product categories from data file (multi-language, multi-level)
+        $this->call(ProductCategorySeeder::class);
+
         if(!app()->isLocal()) {
             return;
         }
@@ -52,19 +55,7 @@ class ProductSeeder extends Seeder
         // Seed product fields and options in a dedicated seeder
         $this->call(ProductFieldSeeder::class);
 
-        $roots = ProductCategory::factory()->count(5)->create();
-        $roots->each(function (ProductCategory $root) {
-            $children = ProductCategory::factory()->count(4)->create([
-                'parent_id' => $root->id,
-            ]);
-
-            if ($children->isNotEmpty()) {
-                $firstChild = $children->first();
-                ProductCategory::factory()->create([
-                    'parent_id' => $firstChild->id,
-                ]);
-            }
-        });
+        // In local environment we skip random category factories in favor of deterministic seeder above
 
         Product::factory(100)->create();
 
