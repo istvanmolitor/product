@@ -4,6 +4,7 @@ namespace Molitor\Product\Providers;
 
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Event;
+use Molitor\Product\Console\Commands\ProductDeleteImages;
 use Molitor\Currency\Events\DefaultCurrencyChanged;
 use Molitor\Product\Listeners\DefaultCurrencyChangedListener;
 use Molitor\Product\Repositories\ProductCategoryProductRepository;
@@ -34,6 +35,12 @@ class ProductServiceProvider extends ServiceProvider
             DefaultCurrencyChanged::class,
             DefaultCurrencyChangedListener::class
         );
+
+        if ($this->app->runningInConsole()) {
+            $this->commands([
+                ProductDeleteImages::class,
+            ]);
+        }
     }
 
     public function register()
