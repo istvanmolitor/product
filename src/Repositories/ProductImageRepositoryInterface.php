@@ -23,8 +23,6 @@ interface ProductImageRepositoryInterface
 
     public function getNextSort(Product $product): int;
 
-    public function insertUrl(Product $product, string $url, string $title = null): ProductImage;
-
     public function saveUrl(Product $product, string $url, string $title = null): ProductImage;
 
     public function addImageFile(Product $product): ProductImage;
@@ -32,4 +30,6 @@ interface ProductImageRepositoryInterface
     public function saveImages(Product $product, array $urls): self;
 
     public function clearImages(Product $product): self;
+
+    public function getById(int $productImageId): ProductImage|null;
 }

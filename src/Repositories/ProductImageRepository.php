@@ -65,10 +65,8 @@ class ProductImageRepository implements ProductImageRepositoryInterface
         return $this->productImage->create(
             [
                 'product_id' => $product->id,
-                'url' => $url,
+                'image_url' => $url,
                 'sort' => $this->getNextSort($product),
-                'title' => $title,
-                'file_id' => null,
             ]
         );
     }
@@ -115,5 +113,10 @@ class ProductImageRepository implements ProductImageRepositoryInterface
             $productImage->delete();
         }
         return $this;
+    }
+
+    public function getById(int $productImageId): ProductImage|null
+    {
+        return $this->productImage->where('id', $productImageId)->first();
     }
 }
