@@ -40,7 +40,7 @@ class ProductImageService
 
     public function hasImageUrl(ProductImage $image): bool
     {
-        return empty($image->url);
+        return !empty($image->image_url);
     }
 
     protected function isValidResponse($response): bool

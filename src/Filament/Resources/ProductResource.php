@@ -179,11 +179,15 @@ class ProductResource extends Resource
                                             ->maxSize(2048)
                                             ->nullable()
                                             ->preserveFilenames(false)
-                                            ->getUploadedFileNameForStorageUsing(fn (\Illuminate\Http\UploadedFile $file): string => time() . '_' . $file->hashName()),
-                                        Forms\Components\TextInput::make('url')
+                                            ->getUploadedFileNameForStorageUsing(fn (\Illuminate\Http\UploadedFile $file): string => time() . '_' . $file->hashName())
+                                            ->reactive()
+                                            ->disabled(fn ($get) => !empty($get('image_url'))),
+                                        Forms\Components\TextInput::make('image_url')
                                             ->label('Kép URL')
                                             ->url()
-                                            ->nullable(),
+                                            ->nullable()
+                                            ->reactive()
+                                            ->disabled(fn ($get) => !empty($get('image'))),
                                     ])->columnSpan(1)->gap(1),
                                     Group::make([
                                         Forms\Components\Repeater::make('translations')
