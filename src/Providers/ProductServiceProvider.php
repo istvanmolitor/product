@@ -32,7 +32,8 @@ class ProductServiceProvider extends ServiceProvider
     {
         $this->loadMigrationsFrom(__DIR__ . '/../database/migrations');
         $this->loadTranslationsFrom(__DIR__ . '/../../resources/lang', 'product');
-        
+        $this->loadViewsFrom(__DIR__ . '/../../resources/views', 'product');
+
         ProductImage::observe(ProductImageObserver::class);
 
         Event::listen(

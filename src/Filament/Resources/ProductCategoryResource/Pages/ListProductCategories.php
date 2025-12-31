@@ -2,8 +2,10 @@
 
 namespace Molitor\Product\Filament\Resources\ProductCategoryResource\Pages;
 
+use Filament\Actions\Action;
 use Filament\Actions\CreateAction;
 use Filament\Resources\Pages\ListRecords;
+use Molitor\Product\Filament\Pages\ProductCategoriesPage;
 use Molitor\Product\Filament\Resources\ProductCategoryResource;
 
 class ListProductCategories extends ListRecords
@@ -23,6 +25,11 @@ class ListProductCategories extends ListRecords
     protected function getHeaderActions(): array
     {
         return [
+            Action::make('tree_view')
+                ->label('Fa nézet')
+                ->icon('heroicon-o-rectangle-group')
+                ->url(route('filament.admin.pages.product-categories-page'))
+                ->color('gray'),
             CreateAction::make()
                 ->label(__('product::product_category.create'))
                 ->icon('heroicon-o-plus'),
