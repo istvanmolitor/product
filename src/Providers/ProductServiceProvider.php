@@ -4,6 +4,7 @@ namespace Molitor\Product\Providers;
 
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Event;
+use Livewire\Livewire;
 use Molitor\Product\Console\Commands\ProductDeleteImages;
 use Molitor\Currency\Events\DefaultCurrencyChanged;
 use Molitor\Product\Listeners\DefaultCurrencyChangedListener;
@@ -33,6 +34,9 @@ class ProductServiceProvider extends ServiceProvider
         $this->loadMigrationsFrom(__DIR__ . '/../database/migrations');
         $this->loadTranslationsFrom(__DIR__ . '/../../resources/lang', 'product');
         $this->loadViewsFrom(__DIR__ . '/../../resources/views', 'product');
+
+        // Register Livewire components
+        Livewire::component('product-category-tree-item', \Molitor\Product\Livewire\CategoryTreeItem::class);
 
         ProductImage::observe(ProductImageObserver::class);
 
