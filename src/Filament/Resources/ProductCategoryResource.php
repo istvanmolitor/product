@@ -7,6 +7,8 @@ use Filament\Actions\DeleteAction;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Forms;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\TextInput;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Tables;
@@ -22,15 +24,7 @@ class ProductCategoryResource extends Resource
 {
     protected static ?string $model = ProductCategory::class;
 
-    protected static \BackedEnum|null|string $navigationIcon = 'heroicon-o-rectangle-group';
-    public static function getNavigationGroup(): string
-    {
-        return __('product::common.group');
-    }
-    public static function getNavigationLabel(): string
-    {
-        return __('product::product_category.title');
-    }
+    protected static bool $shouldRegisterNavigation = false;
 
     public static function canAccess(): bool
     {
@@ -45,14 +39,14 @@ class ProductCategoryResource extends Resource
         $categoryRepository = app(ProductCategoryRepositoryInterface::class);
 
         return $schema->components([
-            Forms\Components\Select::make('parent_id')
+            Select::make('parent_id')
                 ->label(__('product::common.parent_category'))
                 ->options(
                     $categoryRepository->getAllWithRoot()->pluck('name', 'id')
                 )
                 ->default(0)
                 ->required(),
-            Forms\Components\TextInput::make('slug')
+            TextInput::make('slug')
                 ->label(__('product::common.slug'))
                 ->required()
                 ->unique(ignoreRecord: true)
@@ -69,7 +63,7 @@ class ProductCategoryResource extends Resource
                 ->preserveFilenames(false)
                 ->getUploadedFileNameForStorageUsing(fn (\Illuminate\Http\UploadedFile $file): string => time() . '_' . $file->hashName()),
             TranslatableFields::schema([
-                Forms\Components\TextInput::make('name')
+                TextInput::make('name')
                     ->label(__('product::common.name'))
                     ->required()
                     ->maxLength(255),

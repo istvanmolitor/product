@@ -15,7 +15,7 @@ class ProductCategoriesPage extends Page
 
     protected static ?string $slug = 'product-categories-page';
 
-    protected static string|null|\BackedEnum $navigationIcon = 'heroicon-o-rectangle-group';
+    protected static \BackedEnum|null|string $navigationIcon = 'heroicon-o-rectangle-group';
 
     protected static bool $shouldRegisterNavigation = true;
 
@@ -33,12 +33,12 @@ class ProductCategoriesPage extends Page
 
     public static function getNavigationLabel(): string
     {
-        return 'Kategória fa nézet';
+        return __('product::product_category.title');
     }
 
     public function getTitle(): string|Htmlable
     {
-        return 'Termékkategóriák - Fa nézet';
+        return __('product::product_category.title');
     }
 
     public function mount(): void
