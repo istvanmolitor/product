@@ -13,6 +13,7 @@ class ProductCategoryDto
     public string|null $source = null;
     public ProductCategoryPathDto $path;
     public Multilingual $description;
+    public ImageDto|null $image = null;
 
     public function __construct()
     {
