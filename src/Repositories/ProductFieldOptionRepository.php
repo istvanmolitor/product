@@ -12,11 +12,12 @@ use Molitor\Product\Models\ProductFieldOption;
 class ProductFieldOptionRepository implements ProductFieldOptionRepositoryInterface
 {
     private ProductFieldOption $productFieldOption;
+
     private array $cache = [];
 
     public function __construct()
     {
-        $this->productFieldOption = new ProductFieldOption();
+        $this->productFieldOption = new ProductFieldOption;
     }
 
     public function getAll(): Collection
@@ -36,22 +37,23 @@ class ProductFieldOptionRepository implements ProductFieldOptionRepositoryInterf
             ->get()->pluck('name', 'id')->toArray();
     }
 
-    public function getById(int $id): ProductFieldOption|null
+    public function getById(int $id): ?ProductFieldOption
     {
         return $this->productFieldOption->where('id', $id)->first();
     }
 
-    public function getByMultilingualName(ProductField $productField, Multilingual $name): ProductFieldOption|null
+    public function getByMultilingualName(ProductField $productField, Multilingual $name): ?ProductFieldOption
     {
         return $this->productFieldOption->where('product_field_id', $productField->id)->whereMultilingual('name', $name)->first();
     }
 
     public function create(ProductField $productField, string $name, int|string|null $language): ProductFieldOption
     {
-        $productFieldOption = new ProductFieldOption();
+        $productFieldOption = new ProductFieldOption;
         $productFieldOption->product_field_id = $productField->id;
         $productFieldOption->setAttributeTranslation('name', $name, $language);
         $productFieldOption->save();
+
         return $productFieldOption;
     }
 

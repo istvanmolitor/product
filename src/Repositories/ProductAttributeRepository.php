@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Molitor\Product\Repositories;
 
+use Illuminate\Database\Eloquent\Collection;
 use Molitor\Product\Models\Product;
 use Molitor\Product\Models\ProductAttribute;
 use Molitor\Product\Models\ProductField;
 use Molitor\Product\Models\ProductFieldOption;
-use Illuminate\Database\Eloquent\Collection;
 
 class ProductAttributeRepository implements ProductAttributeRepositoryInterface
 {
@@ -17,9 +17,8 @@ class ProductAttributeRepository implements ProductAttributeRepositoryInterface
     public function __construct(
         private ProductFieldRepositoryInterface $productFieldRepository,
         private ProductFieldOptionRepositoryInterface $productFieldOptionRepository
-    )
-    {
-        $this->productAttribute = new ProductAttribute();
+    ) {
+        $this->productAttribute = new ProductAttribute;
     }
 
     public function setAttribute(Product $product, string $name, array|string $value, int|string|null $language = null): self
@@ -35,6 +34,7 @@ class ProductAttributeRepository implements ProductAttributeRepositoryInterface
             $this->deleteAttributes($field)
                 ->add($product, $this->productFieldOptionRepository->create($field, $value, $language));
         }
+
         return $this;
     }
 
@@ -48,6 +48,7 @@ class ProductAttributeRepository implements ProductAttributeRepositoryInterface
         $this->productAttribute
             ->where('product_id', $product->id)
             ->delete();
+
         return true;
     }
 
@@ -64,9 +65,9 @@ class ProductAttributeRepository implements ProductAttributeRepositoryInterface
     protected function exists(Product $product, ProductFieldOption $productFieldOption): bool
     {
         return $this->productAttribute
-                ->where('product_id', $product->id)
-                ->where('product_field_option_id', $productFieldOption->id)
-                ->count() > 0;
+            ->where('product_id', $product->id)
+            ->where('product_field_option_id', $productFieldOption->id)
+            ->count() > 0;
     }
 
     protected function deleteAttributes(ProductField $productField): self
@@ -95,6 +96,7 @@ class ProductAttributeRepository implements ProductAttributeRepositoryInterface
                 ]
             );
         }
+
         return $this;
     }
 
@@ -108,8 +110,7 @@ class ProductAttributeRepository implements ProductAttributeRepositoryInterface
                     'sort' => $sort,
                 ]
             );
-        }
-        else {
+        } else {
             $this->productAttribute
                 ->where('product_id', $product->id)
                 ->where('product_field_option_id', $productFieldOption)

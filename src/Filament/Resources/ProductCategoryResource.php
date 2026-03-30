@@ -13,6 +13,7 @@ use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Gate;
 use Molitor\Language\Filament\Components\TranslatableFields;
 use Molitor\Language\Repositories\LanguageRepositoryInterface;
@@ -61,7 +62,7 @@ class ProductCategoryResource extends Resource
                 ->maxSize(2048)
                 ->nullable()
                 ->preserveFilenames(false)
-                ->getUploadedFileNameForStorageUsing(fn (\Illuminate\Http\UploadedFile $file): string => time() . '_' . $file->hashName()),
+                ->getUploadedFileNameForStorageUsing(fn (UploadedFile $file): string => time().'_'.$file->hashName()),
             TranslatableFields::schema([
                 TextInput::make('name')
                     ->label(__('product::common.name'))

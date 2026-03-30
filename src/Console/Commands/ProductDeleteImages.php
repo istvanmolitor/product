@@ -19,14 +19,15 @@ class ProductDeleteImages extends Command
 
     public function handle(): int
     {
-        if (!$this->option('force')) {
-            if (!$this->confirm('Biztosan törölni szeretnéd az ÖSSZES termékképet és kategóriaképet? Ez nem visszavonható.')) {
+        if (! $this->option('force')) {
+            if (! $this->confirm('Biztosan törölni szeretnéd az ÖSSZES termékképet és kategóriaképet? Ez nem visszavonható.')) {
                 $this->warn('Megszakítva.');
+
                 return self::SUCCESS;
             }
         }
 
-        $dryRun = (bool)$this->option('dry-run');
+        $dryRun = (bool) $this->option('dry-run');
 
         $productImageFileDeletions = 0;
         $productImageRowDeletions = 0;

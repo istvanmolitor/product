@@ -10,10 +10,11 @@ use Molitor\Product\Models\ProductField;
 
 interface ProductFieldRepositoryInterface
 {
-    public function getById(int $productFieldId): ProductField|null;
-    public function getByName(string $name, int|string|null $language): ProductField|null;
+    public function getById(int $productFieldId): ?ProductField;
 
-    public function getByMultilingualName(Multilingual $name): ProductField|null;
+    public function getByName(string $name, int|string|null $language): ?ProductField;
+
+    public function getByMultilingualName(Multilingual $name): ?ProductField;
 
     public function create(string $name, int|string|null $language): ProductField;
 

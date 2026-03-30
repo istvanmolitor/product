@@ -11,19 +11,18 @@ class ProductFieldOptionDtoService
 {
     public function __construct(
         protected ProductFieldOptionRepositoryInterface $productFieldOptionRepository,
-    )
-    {
-    }
+    ) {}
 
     public function makeDto(ProductFieldOption $productFieldOption): ProductFieldOptionDto
     {
-        $productFieldOptionDto = new ProductFieldOptionDto();
-        if($productFieldOption->exists) {
+        $productFieldOptionDto = new ProductFieldOptionDto;
+        if ($productFieldOption->exists) {
             $productFieldOptionDto->id = $productFieldOption->id;
         }
 
         $productFieldOptionDto->name = $productFieldOption->getAttributeDto('name');
         $productFieldOptionDto->description = $productFieldOption->getAttributeDto('description');
+
         return $productFieldOptionDto;
     }
 
@@ -32,6 +31,7 @@ class ProductFieldOptionDtoService
         $productFieldOption = $this->makeModel($productField, $productFieldOptionDto);
         $this->fillModel($productFieldOption, $productFieldOptionDto);
         $productFieldOption->save();
+
         return $productFieldOption;
     }
 
@@ -39,18 +39,19 @@ class ProductFieldOptionDtoService
     {
         if ($productFieldOptionDto->id) {
             $productField = $this->productFieldOptionRepository->getById($productFieldOptionDto->id);
-            if($productField) {
+            if ($productField) {
                 return $productField;
             }
         }
 
         $productFieldOption = $this->productFieldOptionRepository->getByMultilingualName($productField, $productFieldOptionDto->name);
-        if($productFieldOption) {
+        if ($productFieldOption) {
             return $productFieldOption;
         }
 
-        $productFieldOption = new ProductFieldOption();
+        $productFieldOption = new ProductFieldOption;
         $productFieldOption->product_field_id = $productField->id;
+
         return $productFieldOption;
     }
 

@@ -13,9 +13,7 @@ class ProductAttributeDtoService
         private ProductAttributeRepositoryInterface $productAttributeRepository,
         private ProductFieldDtoService $productFieldDtoService,
         private ProductFieldOptionDtoService $productFieldOptionDtoService
-    )
-    {
-    }
+    ) {}
 
     public function makeDto(ProductAttribute $productAttribute): ProductAttributeDto
     {
@@ -24,6 +22,7 @@ class ProductAttributeDtoService
             $this->productFieldOptionDtoService->makeDto($productAttribute->productFieldOption)
         );
         $productAttributeDto->sort = $productAttribute->sort;
+
         return $productAttributeDto;
     }
 
@@ -31,6 +30,7 @@ class ProductAttributeDtoService
     {
         $productField = $this->productFieldDtoService->saveDto($productAttributeDto->field);
         $productFieldOption = $this->productFieldOptionDtoService->saveDto($productField, $productAttributeDto->option);
+
         return $this->productAttributeRepository->save($product, $productFieldOption, $productAttributeDto->sort);
     }
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace Molitor\Product\database\seeders;
+namespace Molitor\Product\Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use Molitor\Product\Models\Product;
@@ -14,7 +14,7 @@ class ProductAttributeSeeder extends Seeder
      */
     public function run(): void
     {
-        if (!app()->isLocal()) {
+        if (! app()->isLocal()) {
             return;
         }
 
@@ -44,7 +44,7 @@ class ProductAttributeSeeder extends Seeder
             $sort = 1;
             foreach ($selectedFieldIds as $fieldId) {
                 $options = $optionsByField->get($fieldId);
-                if (!$options || $options->isEmpty()) {
+                if (! $options || $options->isEmpty()) {
                     continue;
                 }
 

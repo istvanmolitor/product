@@ -30,7 +30,7 @@ class DownloadProductImageJob implements ShouldQueue
         /** @var ProductImageRepositoryInterface $repository */
         $repository = app(ProductImageRepositoryInterface::class);
         $productImage = $repository->getById($this->productImageId);
-        if($productImage) {
+        if ($productImage) {
             $service->downloadProductImage($productImage);
         }
     }

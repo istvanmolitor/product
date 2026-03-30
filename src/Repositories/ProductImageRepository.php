@@ -10,10 +10,9 @@ class ProductImageRepository implements ProductImageRepositoryInterface
 {
     private ProductImage $productImage;
 
-
     public function __construct()
     {
-        $this->productImage = new ProductImage();
+        $this->productImage = new ProductImage;
     }
 
     public function getUrlsByProduct(Product $product): array
@@ -57,10 +56,10 @@ class ProductImageRepository implements ProductImageRepositoryInterface
 
     public function getNextSort(Product $product): int
     {
-        return 1 + (int)$this->productImage->where('product_id', $product->id)->max('sort');
+        return 1 + (int) $this->productImage->where('product_id', $product->id)->max('sort');
     }
 
-    public function insertUrl(Product $product, string $url, string $title = null): ProductImage
+    public function insertUrl(Product $product, string $url, ?string $title = null): ProductImage
     {
         return $this->productImage->create(
             [
@@ -71,14 +70,14 @@ class ProductImageRepository implements ProductImageRepositoryInterface
         );
     }
 
-    public function saveUrl(Product $product, string $url, string $title = null): ProductImage
+    public function saveUrl(Product $product, string $url, ?string $title = null): ProductImage
     {
         $productImage = $this->getImageByUrl($product, $url);
-        if (!$productImage) {
+        if (! $productImage) {
             return $this->insertUrl($product, $url, $title);
         }
 
-        if (!empty($title)) {
+        if (! empty($title)) {
             $productImage->title = $title;
             $productImage->save();
         }
@@ -88,7 +87,7 @@ class ProductImageRepository implements ProductImageRepositoryInterface
 
     public function addImageFile(Product $product): ProductImage
     {
-        $productImage = new ProductImage();
+        $productImage = new ProductImage;
         $productImage->product_id = $product->id;
         $productImage->url = null;
         $productImage->sort = 0;
@@ -104,6 +103,7 @@ class ProductImageRepository implements ProductImageRepositoryInterface
         foreach ($urls as $url) {
             $this->saveUrl($product, $url);
         }
+
         return $this;
     }
 
@@ -112,10 +112,11 @@ class ProductImageRepository implements ProductImageRepositoryInterface
         foreach ($product->productImages as $productImage) {
             $productImage->delete();
         }
+
         return $this;
     }
 
-    public function getById(int $productImageId): ProductImage|null
+    public function getById(int $productImageId): ?ProductImage
     {
         return $this->productImage->where('id', $productImageId)->first();
     }

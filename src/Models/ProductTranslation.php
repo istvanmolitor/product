@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Molitor\Product\Models;
 
-use Illuminate\Database\Eloquent\Model;
 use Molitor\Language\Models\TranslationModel;
 
 class ProductTranslation extends TranslationModel

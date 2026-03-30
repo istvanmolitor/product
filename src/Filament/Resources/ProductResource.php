@@ -14,8 +14,8 @@ use Filament\Schemas\Components\Tabs;
 use Filament\Schemas\Schema;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Gate;
-use Molitor\Currency\Filament\Components\EnabledCurrencySelect;
 use Molitor\Currency\Repositories\CurrencyRepositoryInterface;
 use Molitor\Language\Filament\Components\TranslatableFields;
 use Molitor\Language\Repositories\LanguageRepository;
@@ -36,6 +36,7 @@ class ProductResource extends Resource
     protected static ?string $model = Product::class;
 
     protected static \BackedEnum|null|string $navigationIcon = 'heroicon-o-tag';
+
     public static function getNavigationGroup(): string
     {
         return __('product::common.group');
@@ -136,15 +137,16 @@ class ProductResource extends Resource
                                         ->label(__('product::common.product_field_option'))
                                         ->options(function ($get) use ($productFieldOptionRepository) {
                                             $fieldId = $get('product_field_id');
-                                            if (!$fieldId) {
+                                            if (! $fieldId) {
                                                 return [];
                                             }
-                                            return $productFieldOptionRepository->getOptionsByProductFieldId((int)$fieldId);
+
+                                            return $productFieldOptionRepository->getOptionsByProductFieldId((int) $fieldId);
                                         })
                                         ->searchable()
                                         ->preload()
                                         ->required()
-                                        ->disabled(fn($get) => empty($get('product_field_id'))),
+                                        ->disabled(fn ($get) => empty($get('product_field_id'))),
                                 ])->columns(2),
                         ]),
                     Tabs\Tab::make(__('product::common.product_images'))->schema([
@@ -179,15 +181,15 @@ class ProductResource extends Resource
                                             ->maxSize(2048)
                                             ->nullable()
                                             ->preserveFilenames(false)
-                                            ->getUploadedFileNameForStorageUsing(fn (\Illuminate\Http\UploadedFile $file): string => time() . '_' . $file->hashName())
+                                            ->getUploadedFileNameForStorageUsing(fn (UploadedFile $file): string => time().'_'.$file->hashName())
                                             ->reactive()
-                                            ->disabled(fn ($get) => !empty($get('image_url'))),
+                                            ->disabled(fn ($get) => ! empty($get('image_url'))),
                                         Forms\Components\TextInput::make('image_url')
                                             ->label('Kép URL')
                                             ->url()
                                             ->nullable()
                                             ->reactive()
-                                            ->disabled(fn ($get) => !empty($get('image'))),
+                                            ->disabled(fn ($get) => ! empty($get('image'))),
                                     ])->columnSpan(1)->gap(1),
                                     Group::make([
                                         Forms\Components\Repeater::make('translations')
@@ -214,7 +216,7 @@ class ProductResource extends Resource
                                     ])->columnSpan(2)->gap(2),
                                 ]),
                             ])->columns(1),
-                        ]),
+                    ]),
                     Tabs\Tab::make('Vonalkódok')->schema([
                         Forms\Components\Repeater::make('barcodes')
                             ->label(__('product::barcode.title'))
@@ -228,8 +230,8 @@ class ProductResource extends Resource
                                     ->unique(ignoreRecord: true),
                             ])->columns(1),
                     ]),
-                ])
-            ])->columns(1);
+                ]),
+        ])->columns(1);
     }
 
     public static function table(Table $table): Table
@@ -254,7 +256,7 @@ class ProductResource extends Resource
                     ->sortable(),
                 Tables\Columns\TextColumn::make('price')
                     ->label(__('product::common.price'))
-                    ->formatStateUsing(fn ($record) => (string)$record->getPrice())
+                    ->formatStateUsing(fn ($record) => (string) $record->getPrice())
                     ->sortable(),
             ])
             ->filters([

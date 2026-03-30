@@ -8,7 +8,9 @@ use Molitor\Product\Models\ProductCategory;
 class CategoryTreeItem extends Component
 {
     public ProductCategory $category;
+
     public bool $isOpen = false;
+
     public int $level = 0;
 
     public function mount(ProductCategory $category, int $level = 0): void
@@ -19,7 +21,7 @@ class CategoryTreeItem extends Component
 
     public function toggle(): void
     {
-        $this->isOpen = !$this->isOpen;
+        $this->isOpen = ! $this->isOpen;
     }
 
     public function render()
@@ -36,4 +38,3 @@ class CategoryTreeItem extends Component
         ]);
     }
 }
-

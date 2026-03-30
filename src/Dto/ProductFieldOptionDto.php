@@ -9,7 +9,7 @@ class ProductFieldOptionDto
 {
     use TranslatableDto;
 
-    public int|null $id = null;
+    public ?int $id = null;
 
     public Multilingual $name;
 
@@ -17,8 +17,8 @@ class ProductFieldOptionDto
 
     public function __construct()
     {
-        $this->name = new Multilingual();
-        $this->description = new Multilingual();
+        $this->name = new Multilingual;
+        $this->description = new Multilingual;
     }
 
     public function toArray(): array

@@ -10,15 +10,14 @@ class ProductUnitDtoService
 {
     public function __construct(
         private ProductUnitRepositoryInterface $productUnitRepository,
-    )
-    {
-    }
+    ) {}
 
     public function makeDto(ProductUnit $productUnit): ProductUnitDto
     {
-        $productUnitDto = new ProductUnitDto();
+        $productUnitDto = new ProductUnitDto;
         $productUnitDto->name = $productUnit->getAttributeDto('name');
         $productUnitDto->shortName = $productUnit->getAttributeDto('short_name');
+
         return $productUnitDto;
     }
 
@@ -27,6 +26,7 @@ class ProductUnitDtoService
         $productUnit = $this->makeModel($productUnitDto);
         $this->fillModel($productUnit, $productUnitDto);
         $productUnit->save();
+
         return $productUnit;
     }
 
@@ -43,7 +43,7 @@ class ProductUnitDtoService
             return $productUnit;
         }
 
-        return new ProductUnit();
+        return new ProductUnit;
     }
 
     public function fillModel(ProductUnit $productUnit, ProductUnitDto $productUnitDto): void

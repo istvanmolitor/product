@@ -29,4 +29,3 @@ class ListBarcodes extends ListRecords
         ];
     }
 }
-

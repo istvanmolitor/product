@@ -27,8 +27,8 @@ class ProductImage extends TranslatableModel
         return $this->belongsTo(Product::class);
     }
 
-    public function getSrc(): string|null
+    public function getSrc(): ?string
     {
-        return $this->image ? asset('storage/' . ltrim($this->image, '/')) : null;
+        return $this->image ? asset('storage/'.ltrim($this->image, '/')) : null;
     }
 }

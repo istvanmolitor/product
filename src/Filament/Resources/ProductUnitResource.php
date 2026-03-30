@@ -17,9 +17,6 @@ use Molitor\Language\Repositories\LanguageRepository;
 use Molitor\Language\Repositories\LanguageRepositoryInterface;
 use Molitor\Product\Filament\Resources\ProductUnitResource\Pages;
 use Molitor\Product\Models\ProductUnit;
-use Molitor\Product\Repositories\ProductUnitRepository;
-use Molitor\Product\Repositories\ProductUnitRepositoryInterface;
-use UnitEnum;
 
 class ProductUnitResource extends Resource
 {

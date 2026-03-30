@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Molitor\Product\Listeners;
 
-use Illuminate\Support\Facades\Log;
 use Molitor\Currency\Events\DefaultCurrencyChanged;
 use Molitor\Currency\Services\Price;
 use Molitor\Product\Models\Product;
@@ -23,11 +22,11 @@ class DefaultCurrencyChangedListener
             ->chunkById(200, function ($products) use ($event) {
                 /** @var Product $product */
                 foreach ($products as $product) {
-                    $oldPriceService = new Price((float)$product->price, $event->previousCurrency);
+                    $oldPriceService = new Price((float) $product->price, $event->previousCurrency);
                     $newPriceService = $oldPriceService->exchange($event->currency);
                     $newPrice = (float) $newPriceService->price;
 
-                    if (!self::isNearlyEqual((float)$product->price, $newPrice)) {
+                    if (! self::isNearlyEqual((float) $product->price, $newPrice)) {
                         $product->price = $newPrice;
                         $product->save();
                     }

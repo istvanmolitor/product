@@ -1,6 +1,6 @@
 <?php
 
-namespace Molitor\Product\database\seeders;
+namespace Molitor\Product\Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use Molitor\Product\Models\ProductField;
@@ -13,21 +13,21 @@ class ProductFieldSeeder extends Seeder
      */
     public function run(): void
     {
-        if (!app()->isLocal()) {
+        if (! app()->isLocal()) {
             return;
         }
 
-        $data = require_once(__DIR__ . '/data/product_fields.php');
+        $data = require_once __DIR__.'/data/product_fields.php';
 
         foreach ($data as $productFieldData) {
-            $productField = new ProductField();
+            $productField = new ProductField;
             foreach ($productFieldData['name'] as $locale => $name) {
                 $productField->setAttributeTranslation('name', $name, $locale);
             }
             $productField->save();
 
             foreach ($productFieldData['options'] as $option) {
-                $productFieldOption = new ProductFieldOption();
+                $productFieldOption = new ProductFieldOption;
                 $productFieldOption->product_field_id = $productField->id;
                 foreach ($option['name'] as $locale => $name) {
                     $productFieldOption->setAttributeTranslation('name', $name, $locale);

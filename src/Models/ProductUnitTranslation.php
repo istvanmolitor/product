@@ -22,7 +22,7 @@ class ProductUnitTranslation extends TranslationModel
     {
         return [
             'name',
-            'short_name'
+            'short_name',
         ];
     }
 }

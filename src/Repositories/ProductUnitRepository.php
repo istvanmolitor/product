@@ -11,14 +11,15 @@ use Molitor\Product\Models\ProductUnit;
 class ProductUnitRepository implements ProductUnitRepositoryInterface
 {
     private ProductUnit $productUnit;
+
     private array $shortNameCache = [];
 
     public function __construct()
     {
-        $this->productUnit = new ProductUnit();
+        $this->productUnit = new ProductUnit;
     }
 
-    public function getByCode(string $code): ProductUnit|null
+    public function getByCode(string $code): ?ProductUnit
     {
         return $this->productUnit->where('code', $code)->first();
     }
@@ -32,15 +33,16 @@ class ProductUnitRepository implements ProductUnitRepositoryInterface
             ->get();
     }
 
-    public function getByShortName(string $shortName): ProductUnit|null
+    public function getByShortName(string $shortName): ?ProductUnit
     {
-        if (!array_key_exists($shortName, $this->shortNameCache)) {
+        if (! array_key_exists($shortName, $this->shortNameCache)) {
             $this->shortNameCache[$shortName] = $this->productUnit
                 ->joinTranslation()
                 ->whereTranslation('short_name', $shortName)
                 ->selectBase()
                 ->first();
         }
+
         return $this->shortNameCache[$shortName];
     }
 
@@ -55,15 +57,16 @@ class ProductUnitRepository implements ProductUnitRepositoryInterface
             'name' => $shortName,
             'short_name' => $shortName,
         ]);
+
         return $this->shortNameCache[$shortName];
     }
 
-    public function getDefault(): ProductUnit|null
+    public function getDefault(): ?ProductUnit
     {
         return $this->productUnit->where('id', 1)->first();
     }
 
-    public function getDefaultId(): int|null
+    public function getDefaultId(): ?int
     {
         return $this->getDefault()?->id;
     }
@@ -73,12 +76,12 @@ class ProductUnitRepository implements ProductUnitRepositoryInterface
         return $this->productUnit->get()->pluck('name', 'id')->toArray();
     }
 
-    public function getById(?int $id): ProductUnit|null
+    public function getById(?int $id): ?ProductUnit
     {
         return $this->productUnit->where('id', $id)->first();
     }
 
-    public function getByMultilingualSortName(Multilingual $shortName): ProductUnit|null
+    public function getByMultilingualSortName(Multilingual $shortName): ?ProductUnit
     {
         return $this->productUnit->whereMultilingual('short_name', $shortName)->first();
     }

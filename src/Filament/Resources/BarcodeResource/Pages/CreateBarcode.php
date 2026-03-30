@@ -9,4 +9,3 @@ class CreateBarcode extends CreateRecord
 {
     protected static string $resource = BarcodeResource::class;
 }
-

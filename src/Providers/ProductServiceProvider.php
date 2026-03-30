@@ -2,14 +2,16 @@
 
 namespace Molitor\Product\Providers;
 
-use Illuminate\Support\ServiceProvider;
+use Illuminate\Routing\Router;
 use Illuminate\Support\Facades\Event;
-use Livewire\Livewire;
-use Molitor\Product\Console\Commands\ProductDeleteImages;
+use Illuminate\Support\ServiceProvider;
 use Molitor\Currency\Events\DefaultCurrencyChanged;
+use Molitor\Product\Console\Commands\ProductDeleteImages;
 use Molitor\Product\Listeners\DefaultCurrencyChangedListener;
 use Molitor\Product\Models\ProductImage;
 use Molitor\Product\Observers\ProductImageObserver;
+use Molitor\Product\Repositories\ProductAttributeRepository;
+use Molitor\Product\Repositories\ProductAttributeRepositoryInterface;
 use Molitor\Product\Repositories\ProductCategoryProductRepository;
 use Molitor\Product\Repositories\ProductCategoryProductRepositoryInterface;
 use Molitor\Product\Repositories\ProductCategoryRepository;
@@ -18,8 +20,6 @@ use Molitor\Product\Repositories\ProductFieldOptionRepository;
 use Molitor\Product\Repositories\ProductFieldOptionRepositoryInterface;
 use Molitor\Product\Repositories\ProductFieldRepository;
 use Molitor\Product\Repositories\ProductFieldRepositoryInterface;
-use Molitor\Product\Repositories\ProductAttributeRepository;
-use Molitor\Product\Repositories\ProductAttributeRepositoryInterface;
 use Molitor\Product\Repositories\ProductImageRepository;
 use Molitor\Product\Repositories\ProductImageRepositoryInterface;
 use Molitor\Product\Repositories\ProductRepository;
@@ -31,12 +31,14 @@ class ProductServiceProvider extends ServiceProvider
 {
     public function boot()
     {
-        $this->loadMigrationsFrom(__DIR__ . '/../database/migrations');
-        $this->loadTranslationsFrom(__DIR__ . '/../../resources/lang', 'product');
-        $this->loadViewsFrom(__DIR__ . '/../../resources/views', 'product');
+        $this->loadMigrationsFrom(__DIR__.'/../Database/Migrations');
+        $this->loadTranslationsFrom(__DIR__.'/../../resources/lang', 'product');
+        $this->loadViewsFrom(__DIR__.'/../../resources/views', 'product');
 
-        // Register Livewire components
-        Livewire::component('product-category-tree-item', \Molitor\Product\Livewire\CategoryTreeItem::class);
+        // Load API routes with /api prefix
+        $this->app->make(Router::class)
+            ->prefix('api')
+            ->group(__DIR__.'/../routes/api.php');
 
         ProductImage::observe(ProductImageObserver::class);
 

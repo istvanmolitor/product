@@ -20,7 +20,7 @@ class ProductFieldOption extends TranslatableModel
 
     public function __toString(): string
     {
-        return $this->productField . ': ' . $this->name;
+        return $this->productField.': '.$this->name;
     }
 
     public function getTranslationModelClass(): string

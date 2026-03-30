@@ -3,9 +3,6 @@
 namespace Molitor\Product\Services\Dto;
 
 use Illuminate\Database\Eloquent\Model;
-use Molitor\CustomerProduct\Models\CustomerProduct;
-use Molitor\CustomerProduct\Models\CustomerProductImage;
-use Molitor\Product\Dto\ImageDto;
 use Molitor\Product\Dto\ProductDto;
 
 abstract class BaseProductDtoService
@@ -27,8 +24,5 @@ abstract class BaseProductDtoService
         $model->product_unit_id = $this->productUnitDtoService->saveDto($productDto->productUnit)->id;
     }
 
-    protected function updateModelImages(Model $productModel, string $imagesField, string $productIdField, ProductDto $productDto): void
-    {
-
-    }
+    protected function updateModelImages(Model $productModel, string $imagesField, string $productIdField, ProductDto $productDto): void {}
 }

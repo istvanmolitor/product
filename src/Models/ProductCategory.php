@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Molitor\Language\Models\TranslatableModel;
-use Molitor\Product\database\factories\ProductCategoryFactory;
+use Molitor\Product\Database\Factories\ProductCategoryFactory;
 
 class ProductCategory extends TranslatableModel
 {
@@ -35,7 +35,7 @@ class ProductCategory extends TranslatableModel
 
     public function __toString(): string
     {
-        return (string)$this->name;
+        return (string) $this->name;
     }
 
     public function parent(): BelongsTo
@@ -54,8 +54,8 @@ class ProductCategory extends TranslatableModel
             ->where('right_value', '<=', $category->right_value);
     }
 
-    public function getSrc(): string|null
+    public function getSrc(): ?string
     {
-        return $this->image ? asset('storage/' . ltrim($this->image, '/')) : null;
+        return $this->image ? asset('storage/'.ltrim($this->image, '/')) : null;
     }
 }

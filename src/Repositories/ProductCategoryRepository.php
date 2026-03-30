@@ -14,7 +14,7 @@ class ProductCategoryRepository implements ProductCategoryRepositoryInterface
 
     public function __construct()
     {
-        $this->productCategory = new ProductCategory();
+        $this->productCategory = new ProductCategory;
     }
 
     public function refreshLeftRight(): void
@@ -32,6 +32,7 @@ class ProductCategoryRepository implements ProductCategoryRepositoryInterface
                     'right_value' => $leftValue,
                 ]);
             }
+
             return $leftValue;
         } else {
             foreach ($subCategories as $subCategory) {
@@ -42,6 +43,7 @@ class ProductCategoryRepository implements ProductCategoryRepositoryInterface
 
                 $leftValue = $rightValue + 1;
             }
+
             return $rightValue;
         }
     }
@@ -84,6 +86,7 @@ class ProductCategoryRepository implements ProductCategoryRepositoryInterface
         if ($productCategory) {
             return $productCategory;
         }
+
         return $this->productCategory->create([
             'name' => $name,
         ]);
@@ -104,6 +107,7 @@ class ProductCategoryRepository implements ProductCategoryRepositoryInterface
         if ($productCategory) {
             return $productCategory;
         }
+
         return $this->productCategory->create([
             'parent_id' => $parent->id,
             'name' => $name,
@@ -114,6 +118,7 @@ class ProductCategoryRepository implements ProductCategoryRepositoryInterface
     {
         $path = $category->parent ? $this->getPathCategories($category->parent) : [];
         $path[] = $category;
+
         return $path;
     }
 
@@ -121,13 +126,14 @@ class ProductCategoryRepository implements ProductCategoryRepositoryInterface
 
     public function getPath(ProductCategory $category): array
     {
-        if (!array_key_exists($category->id, $this->pathCache)) {
+        if (! array_key_exists($category->id, $this->pathCache)) {
             $path = [];
             foreach ($this->getPathCategories($category) as $pathCategory) {
                 $path[] = $pathCategory->name;
             }
             $this->pathCache[$category->id] = $path;
         }
+
         return $this->pathCache[$category->id];
     }
 
@@ -145,7 +151,7 @@ class ProductCategoryRepository implements ProductCategoryRepositoryInterface
             } else {
                 $parent = $this->createSubProductCategory($parent, $name);
             }
-            if (!$parent) {
+            if (! $parent) {
                 return null;
             }
         }
@@ -162,6 +168,7 @@ class ProductCategoryRepository implements ProductCategoryRepositoryInterface
             return $this->getRootCategoryByName($path[0]);
         } else {
             $parent = $this->getByPath(array_slice($path, 0, $count - 1));
+
             return $this->getSubCategoryByName($parent, $path[$count - 1]);
         }
     }
@@ -173,17 +180,19 @@ class ProductCategoryRepository implements ProductCategoryRepositoryInterface
         if ($this->allProductCategories === null) {
             $this->allProductCategories = $this->productCategory->get();
         }
+
         return $this->allProductCategories;
     }
 
     public function getAllWithRoot(): Collection
     {
         $categories = $this->getAll();
-        $categories->prepend((object)[
+        $categories->prepend((object) [
             'id' => 0,
             'name' => 'Főkategória',
             'parent_id' => null,
         ]);
+
         return $categories;
     }
 
@@ -193,7 +202,8 @@ class ProductCategoryRepository implements ProductCategoryRepositoryInterface
         foreach ($this->getSubProductCategories($productCategory) as $subProductCategory) {
             $this->delete($subProductCategory);
         }
-        (new ProductCategoryProductRepository())->deleteByProductCategory($productCategory);
+        (new ProductCategoryProductRepository)->deleteByProductCategory($productCategory);
+
         return $productCategory->delete();
     }
 

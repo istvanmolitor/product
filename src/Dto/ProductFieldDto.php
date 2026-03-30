@@ -9,7 +9,7 @@ class ProductFieldDto
 {
     use TranslatableDto;
 
-    public int|null $id = null;
+    public ?int $id = null;
 
     public Multilingual $name;
 
@@ -21,19 +21,18 @@ class ProductFieldDto
 
     public function __construct()
     {
-        $this->name = new Multilingual();
-        $this->description = new Multilingual();
+        $this->name = new Multilingual;
+        $this->description = new Multilingual;
     }
 
     public function toArray(): array
     {
-        if($this->multiple) {
+        if ($this->multiple) {
             $value = [];
             foreach ($this->getProductFieldOptions() as $productFieldOption) {
                 $value[] = $productFieldOption->toArray();
             }
-        }
-        else {
+        } else {
             $value = $this->getProductFieldOption()?->toArray();
         }
 
@@ -47,7 +46,7 @@ class ProductFieldDto
 
     public function addProductFieldOption(ProductFieldOptionDto $productFieldOption): void
     {
-        if(!$this->multiple) {
+        if (! $this->multiple) {
             $this->productFieldOptions = [];
         }
         $this->productFieldOptions[] = $productFieldOption;
@@ -58,11 +57,12 @@ class ProductFieldDto
         return $this->productFieldOptions;
     }
 
-    public function getProductFieldOption(): ProductFieldOptionDto|null
+    public function getProductFieldOption(): ?ProductFieldOptionDto
     {
-        if(count($this->productFieldOptions) === 0) {
+        if (count($this->productFieldOptions) === 0) {
             return null;
         }
+
         return $this->productFieldOptions[0];
     }
 }

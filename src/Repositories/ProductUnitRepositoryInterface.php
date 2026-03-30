@@ -12,19 +12,19 @@ interface ProductUnitRepositoryInterface
 {
     public function getAll(): Collection;
 
-    public function getByCode(string $code): ProductUnit|null;
+    public function getByCode(string $code): ?ProductUnit;
 
-    public function getByShortName(string $shortName): ProductUnit|null;
+    public function getByShortName(string $shortName): ?ProductUnit;
 
     public function findOrCreate(string $shortName): ProductUnit;
 
-    public function getDefault(): ProductUnit|null;
+    public function getDefault(): ?ProductUnit;
 
-    public function getDefaultId(): int|null;
+    public function getDefaultId(): ?int;
 
     public function getOptions(): array;
 
-    public function getById(int|null $id): ProductUnit|null;
+    public function getById(?int $id): ?ProductUnit;
 
-    public function getByMultilingualSortName(Multilingual $shortName): ProductUnit|null;
+    public function getByMultilingualSortName(Multilingual $shortName): ?ProductUnit;
 }

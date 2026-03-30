@@ -3,7 +3,6 @@
 namespace Molitor\Product\Repositories;
 
 use Illuminate\Database\Eloquent\Collection;
-use Molitor\File\Models\ImageFile;
 use Molitor\Product\Models\Product;
 use Molitor\Product\Models\ProductImage;
 
@@ -23,7 +22,7 @@ interface ProductImageRepositoryInterface
 
     public function getNextSort(Product $product): int;
 
-    public function saveUrl(Product $product, string $url, string $title = null): ProductImage;
+    public function saveUrl(Product $product, string $url, ?string $title = null): ProductImage;
 
     public function addImageFile(Product $product): ProductImage;
 
@@ -31,5 +30,5 @@ interface ProductImageRepositoryInterface
 
     public function clearImages(Product $product): self;
 
-    public function getById(int $productImageId): ProductImage|null;
+    public function getById(int $productImageId): ?ProductImage;
 }

@@ -9,9 +9,7 @@ class ProductImageObserver
 {
     public function __construct(
         private ProductImageService $productImageService,
-    )
-    {
-    }
+    ) {}
 
     /**
      * Handle the ProductImage "created" event.
@@ -34,4 +32,3 @@ class ProductImageObserver
         }
     }
 }
-

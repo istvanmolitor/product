@@ -9,7 +9,6 @@ use Molitor\Product\Models\ProductCategory;
 
 interface ProductCategoryRepositoryInterface
 {
-
     public function refreshLeftRight(): void;
 
     public function getRootProductCategories(): Collection;

@@ -22,10 +22,12 @@ class ProductFieldResource extends Resource
     protected static ?string $model = ProductField::class;
 
     protected static \BackedEnum|null|string $navigationIcon = 'heroicon-o-rectangle-stack';
+
     public static function getNavigationGroup(): string
     {
         return __('product::common.group');
     }
+
     public static function getNavigationLabel(): string
     {
         return __('product::product_field.title');

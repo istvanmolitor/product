@@ -5,7 +5,9 @@ namespace Molitor\Product\Services;
 abstract class TreeBuilder
 {
     private array $rootIds = [];
+
     private array $children = [];
+
     private array $items = [];
 
     public function idExists(int $id): bool
@@ -20,7 +22,7 @@ abstract class TreeBuilder
 
     public function add(int $id, int $parentId, array $data): bool
     {
-        if($this->idExists($id)) {
+        if ($this->idExists($id)) {
             return false;
         }
 
@@ -29,14 +31,12 @@ abstract class TreeBuilder
             'data' => $data,
         ];
 
-        if($parentId === 0) {
+        if ($parentId === 0) {
             $this->rootIds[] = $id;
-        }
-        else {
-            if(array_key_exists($parentId, $this->children)) {
+        } else {
+            if (array_key_exists($parentId, $this->children)) {
                 $this->children[$parentId][] = $id;
-            }
-            else {
+            } else {
                 $this->children[$parentId] = [$id];
             }
         }
@@ -44,12 +44,13 @@ abstract class TreeBuilder
 
     public function getChildrenIds(int $id): array
     {
-        if($id === 0) {
+        if ($id === 0) {
             return $this->rootIds;
         }
-        if(array_key_exists($id, $this->children)) {
+        if (array_key_exists($id, $this->children)) {
             return $this->children[$id];
         }
+
         return [];
     }
 
@@ -65,7 +66,7 @@ abstract class TreeBuilder
 
     public function getPath(int $id): array
     {
-        if(!$this->idExists($id)) {
+        if (! $this->idExists($id)) {
             return [];
         }
     }

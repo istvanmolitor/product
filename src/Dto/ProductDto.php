@@ -9,27 +9,43 @@ class ProductDto
 {
     use TranslatableDto;
 
-    public int|null $id = null;
-    public string|null $source = null;
-    public bool|null $active = null;
-    public string|null $sku = null;
-    public Multilingual $name;
-    public Multilingual $description;
-    protected array $images = [];
-    protected array $attributes = [];
-    protected array $categories = [];
-    public float|null $price = null;
-    public string|null $currency = null;
-    public string|null $slug = null;
-    public string|null $url = null;
-    public float|null $stock = null;
-    public ProductUnitDto $productUnit;
-    public float|null $weight = null;
+    public ?int $id = null;
 
-    public function __construct() {
-        $this->name = new Multilingual();
-        $this->description = new Multilingual();
-        $this->productUnit = new ProductUnitDto();
+    public ?string $source = null;
+
+    public ?bool $active = null;
+
+    public ?string $sku = null;
+
+    public Multilingual $name;
+
+    public Multilingual $description;
+
+    protected array $images = [];
+
+    protected array $attributes = [];
+
+    protected array $categories = [];
+
+    public ?float $price = null;
+
+    public ?string $currency = null;
+
+    public ?string $slug = null;
+
+    public ?string $url = null;
+
+    public ?float $stock = null;
+
+    public ProductUnitDto $productUnit;
+
+    public ?float $weight = null;
+
+    public function __construct()
+    {
+        $this->name = new Multilingual;
+        $this->description = new Multilingual;
+        $this->productUnit = new ProductUnitDto;
     }
 
     public function toArray(): array
@@ -61,6 +77,7 @@ class ProductDto
     public function addImage(ImageDto $image): self
     {
         $this->images[] = $image;
+
         return $this;
     }
 
@@ -72,6 +89,7 @@ class ProductDto
     public function addAttribute(ProductAttributeDto $attribute): self
     {
         $this->attributes[] = $attribute;
+
         return $this;
     }
 
@@ -83,6 +101,7 @@ class ProductDto
     public function addCategory(ProductCategoryDto $category): self
     {
         $this->categories[] = $category;
+
         return $this;
     }
 

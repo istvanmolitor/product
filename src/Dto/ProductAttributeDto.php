@@ -8,9 +8,7 @@ class ProductAttributeDto
         public ProductFieldDto $field,
         public ProductFieldOptionDto $option,
         public int $sort = 0,
-    )
-    {
-    }
+    ) {}
 
     public function toArray(): array
     {

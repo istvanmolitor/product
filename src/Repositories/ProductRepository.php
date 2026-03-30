@@ -20,12 +20,11 @@ class ProductRepository implements ProductRepositoryInterface
         private CurrencyRepositoryInterface $currencyRepository,
         private ProductUnitRepositoryInterface $productUnitRepository,
         private ProductCategoryProductRepositoryInterface $productCategoryProductRepository
-    )
-    {
-        $this->product = new Product();
+    ) {
+        $this->product = new Product;
     }
 
-    public function getById(int $id): Product|null
+    public function getById(int $id): ?Product
     {
         return $this->product->where('id', $id)->first();
     }
@@ -42,6 +41,7 @@ class ProductRepository implements ProductRepositoryInterface
             return $product;
         }
         $productUnit = $this->productUnitRepository->getDefault();
+
         return $this->product->create(
             [
                 'active' => false,
@@ -53,21 +53,20 @@ class ProductRepository implements ProductRepositoryInterface
     }
 
     public function save(
-        string      $sku,
-        string      $name,
-        string      $description = null,
-        float       $price = null,
-        Currency    $currency = null,
-        ProductUnit $productUnit = null
-    ): Product
-    {
+        string $sku,
+        string $name,
+        ?string $description = null,
+        ?float $price = null,
+        ?Currency $currency = null,
+        ?ProductUnit $productUnit = null
+    ): Product {
         $currency = $this->currencyRepository->make($currency);
         $productUnit = $this->productUnitRepository->make($productUnit);
 
         $product = $this->getBySku($sku);
         if ($product) {
             $product->name = $name;
-            if (!empty($description)) {
+            if (! empty($description)) {
                 $product->description = $description;
             }
             if ($price !== null) {
@@ -101,6 +100,7 @@ class ProductRepository implements ProductRepositoryInterface
     {
         event(new ProductDestroyEvent($product));
         $this->productCategoryProductRepository->deleteByProduct($product);
+
         return $product->delete();
     }
 

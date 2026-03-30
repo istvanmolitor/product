@@ -3,7 +3,6 @@
 namespace Molitor\Product\Services\Dto;
 
 use Molitor\Currency\Repositories\CurrencyRepositoryInterface;
-use Molitor\Product\Dto\ProductAttributeDto;
 use Molitor\Product\Dto\ProductDto;
 use Molitor\Product\Models\Product;
 use Molitor\Product\Models\ProductAttribute;
@@ -16,13 +15,11 @@ class ProductDtoService
         protected ProductUnitDtoService $productUnitDtoService,
         protected ProductAttributeDtoService $productAttributeDtoService,
         protected CurrencyRepositoryInterface $currencyRepository,
-    )
-    {
-    }
+    ) {}
 
     public function makeDto(Product $product): ProductDto
     {
-        $productDto = new ProductDto();
+        $productDto = new ProductDto;
         $productDto->active = $product->active;
         $productDto->sku = $product->sku;
         $productDto->name = $product->getAttributeDto('name');
@@ -52,25 +49,25 @@ class ProductDtoService
 
     public function makeModel(ProductDto $productDto): Product
     {
-        if($productDto->source === 'product' and $productDto->id)
-        {
+        if ($productDto->source === 'product' and $productDto->id) {
             $product = $this->productRepository->getById($productDto->id);
-            if($product) {
+            if ($product) {
                 return $product;
             }
         }
         $product = $this->productRepository->getBySku($productDto->sku);
-        if($product) {
+        if ($product) {
             return $product;
         }
-        $product = new Product();
+        $product = new Product;
         $product->sku = $productDto->sku;
+
         return $product;
     }
 
     public function fillModel(Product $product, ProductDto $productDto): void
     {
-        $product->active = (bool)$productDto->active;
+        $product->active = (bool) $productDto->active;
         $product->sku = $productDto->sku;
         $product->setAttributeDto('name', $productDto->name);
         $product->setAttributeDto('description', $productDto->description);

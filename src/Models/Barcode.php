@@ -14,7 +14,7 @@ class Barcode extends Model
 
     public function __toString(): string
     {
-        return (string)$this->barcode;
+        return (string) $this->barcode;
     }
 
     public function product(): BelongsTo

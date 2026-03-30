@@ -17,9 +17,9 @@ interface ProductFieldOptionRepositoryInterface
 
     public function getOptionsByProductFieldId(int $productFieldId): array;
 
-    public function getById(int $id): ProductFieldOption|null;
+    public function getById(int $id): ?ProductFieldOption;
 
-    public function getByMultilingualName(ProductField $productField, Multilingual $name): ProductFieldOption|null;
+    public function getByMultilingualName(ProductField $productField, Multilingual $name): ?ProductFieldOption;
 
     public function create(ProductField $productField, string $name, int|string|null $language): ProductFieldOption;
 

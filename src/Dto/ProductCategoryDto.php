@@ -9,15 +9,19 @@ class ProductCategoryDto
 {
     use TranslatableDto;
 
-    public int|null $id = null;
-    public string|null $source = null;
+    public ?int $id = null;
+
+    public ?string $source = null;
+
     public ProductCategoryPathDto $path;
+
     public Multilingual $description;
-    public ImageDto|null $image = null;
+
+    public ?ImageDto $image = null;
 
     public function __construct()
     {
-        $this->path = new ProductCategoryPathDto();
-        $this->description = new Multilingual();
+        $this->path = new ProductCategoryPathDto;
+        $this->description = new Multilingual;
     }
 }

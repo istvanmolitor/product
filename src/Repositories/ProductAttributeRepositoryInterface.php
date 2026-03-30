@@ -4,14 +4,13 @@ declare(strict_types=1);
 
 namespace Molitor\Product\Repositories;
 
+use Illuminate\Database\Eloquent\Collection;
 use Molitor\Product\Models\Product;
 use Molitor\Product\Models\ProductAttribute;
 use Molitor\Product\Models\ProductFieldOption;
-use Illuminate\Database\Eloquent\Collection;
 
 interface ProductAttributeRepositoryInterface
 {
-
     public function setAttribute(Product $product, string $name, string|array $value): self;
 
     public function getProductAttributesByProduct(Product $product): Collection;

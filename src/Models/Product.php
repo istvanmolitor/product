@@ -14,12 +14,12 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Str;
 use Molitor\Currency\Services\Price;
 use Molitor\Language\Models\TranslatableModel;
-use Molitor\Product\database\factories\ProductFactory;
+use Molitor\Product\Database\Factories\ProductFactory;
 
 class Product extends TranslatableModel
 {
-    use SoftDeletes;
     use HasFactory;
+    use SoftDeletes;
 
     protected static function newFactory(): ProductFactory
     {
@@ -30,7 +30,7 @@ class Product extends TranslatableModel
     {
         static::saving(function (Product $product) {
             if (empty($product->slug)) {
-                $base = trim(($product->sku ?? '') . ' ' . ($product->name ?? ''));
+                $base = trim(($product->sku ?? '').' '.($product->name ?? ''));
                 if ($base === '') {
                     $base = (string) now()->timestamp;
                 }
@@ -69,7 +69,7 @@ class Product extends TranslatableModel
 
     public function __toString(): string
     {
-        return $this->sku . ', ' . $this->name;
+        return $this->sku.', '.$this->name;
     }
 
     public function productImages(): HasMany
@@ -107,7 +107,7 @@ class Product extends TranslatableModel
         );
     }
 
-    public function scopeCategoryFilter(Builder $builder, ProductCategory $productCategory = null)
+    public function scopeCategoryFilter(Builder $builder, ?ProductCategory $productCategory = null)
     {
         if ($productCategory !== null) {
             $builder->join('product_category_products', 'product_category_products.product_id', '=', 'products.id')
@@ -140,7 +140,7 @@ class Product extends TranslatableModel
         while (static::withTrashed()->where('slug', $slug)->when($this->exists, function ($q) {
             $q->where('id', '!=', $this->id);
         })->exists()) {
-            $slug = $original . '-' . $i;
+            $slug = $original.'-'.$i;
             $i++;
         }
 

@@ -22,7 +22,7 @@ class ProductFieldOptionTranslation extends TranslationModel
     {
         return [
             'name',
-            'description'
+            'description',
         ];
     }
 }

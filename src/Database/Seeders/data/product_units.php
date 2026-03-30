@@ -6,12 +6,12 @@ return [
         'name' => [
             'en' => 'Pieces',
             'hu' => 'Darab',
-            'de' => 'Stücke'
+            'de' => 'Stücke',
         ],
         'short_name' => [
             'en' => 'pcs',
             'hu' => 'db',
-            'de' => 'Stk'
+            'de' => 'Stk',
         ],
     ],
     'kg' => [
@@ -19,12 +19,12 @@ return [
         'name' => [
             'en' => 'Kilogram',
             'hu' => 'Kilogramm',
-            'de' => 'Kilogramm'
+            'de' => 'Kilogramm',
         ],
         'short_name' => [
             'en' => 'kg',
             'hu' => 'kg',
-            'de' => 'kg'
+            'de' => 'kg',
         ],
     ],
     'g' => [
@@ -32,12 +32,12 @@ return [
         'name' => [
             'en' => 'Gram',
             'hu' => 'Gram',
-            'de' => 'Gramm'
+            'de' => 'Gramm',
         ],
         'short_name' => [
             'en' => 'g',
             'hu' => 'g',
-            'de' => 'g'
+            'de' => 'g',
         ],
     ],
     'mg' => [
@@ -45,12 +45,12 @@ return [
         'name' => [
             'en' => 'Milligram',
             'hu' => 'Milligramm',
-            'de' => 'Milligramm'
+            'de' => 'Milligramm',
         ],
         'short_name' => [
             'en' => 'mg',
             'hu' => 'mg',
-            'de' => 'mg'
+            'de' => 'mg',
         ],
     ],
     'l' => [
@@ -58,12 +58,12 @@ return [
         'name' => [
             'en' => 'Litre',
             'hu' => 'Liter',
-            'de' => 'Liter'
+            'de' => 'Liter',
         ],
         'short_name' => [
             'en' => 'L',
             'hu' => 'l',
-            'de' => 'l'
+            'de' => 'l',
         ],
     ],
     'ml' => [
@@ -71,12 +71,12 @@ return [
         'name' => [
             'en' => 'Millilitre',
             'hu' => 'Milliliter',
-            'de' => 'Milliliter'
+            'de' => 'Milliliter',
         ],
         'short_name' => [
             'en' => 'ml',
             'hu' => 'ml',
-            'de' => 'ml'
+            'de' => 'ml',
         ],
     ],
     'm' => [
@@ -84,12 +84,12 @@ return [
         'name' => [
             'en' => 'Metre',
             'hu' => 'Méter',
-            'de' => 'Meter'
+            'de' => 'Meter',
         ],
         'short_name' => [
             'en' => 'm',
             'hu' => 'm',
-            'de' => 'm'
+            'de' => 'm',
         ],
     ],
     'cm' => [
@@ -97,12 +97,12 @@ return [
         'name' => [
             'en' => 'Centimetre',
             'hu' => 'Centiméter',
-            'de' => 'Zentimeter'
+            'de' => 'Zentimeter',
         ],
         'short_name' => [
             'en' => 'cm',
             'hu' => 'cm',
-            'de' => 'cm'
+            'de' => 'cm',
         ],
     ],
     'mm' => [
@@ -110,12 +110,12 @@ return [
         'name' => [
             'en' => 'Millimetre',
             'hu' => 'Milliméter',
-            'de' => 'Millimeter'
+            'de' => 'Millimeter',
         ],
         'short_name' => [
             'en' => 'mm',
             'hu' => 'mm',
-            'de' => 'mm'
+            'de' => 'mm',
         ],
     ],
     'pair' => [
@@ -123,12 +123,12 @@ return [
         'name' => [
             'en' => 'Pair',
             'hu' => 'Pár',
-            'de' => 'Paar'
+            'de' => 'Paar',
         ],
         'short_name' => [
             'en' => 'pr',
             'hu' => 'pár',
-            'de' => 'Pr.'
+            'de' => 'Pr.',
         ],
     ],
     'set' => [
@@ -136,12 +136,12 @@ return [
         'name' => [
             'en' => 'Set',
             'hu' => 'Szett',
-            'de' => 'Set'
+            'de' => 'Set',
         ],
         'short_name' => [
             'en' => 'set',
             'hu' => 'szett',
-            'de' => 'set'
+            'de' => 'set',
         ],
     ],
     'box' => [
@@ -149,12 +149,12 @@ return [
         'name' => [
             'en' => 'Box',
             'hu' => 'Doboz',
-            'de' => 'Box'
+            'de' => 'Box',
         ],
         'short_name' => [
             'en' => 'box',
             'hu' => 'db',
-            'de' => 'Box'
+            'de' => 'Box',
         ],
     ],
     'pack' => [
@@ -162,12 +162,12 @@ return [
         'name' => [
             'en' => 'Pack',
             'hu' => 'Csomag',
-            'de' => 'Packung'
+            'de' => 'Packung',
         ],
         'short_name' => [
             'en' => 'pkg',
             'hu' => 'cs',
-            'de' => 'Pkg'
+            'de' => 'Pkg',
         ],
     ],
     'roll' => [
@@ -175,12 +175,12 @@ return [
         'name' => [
             'en' => 'Roll',
             'hu' => 'Guriga',
-            'de' => 'Rolle'
+            'de' => 'Rolle',
         ],
         'short_name' => [
             'en' => 'roll',
             'hu' => 'g',
-            'de' => 'Rolle'
+            'de' => 'Rolle',
         ],
     ],
     'tube' => [
@@ -188,12 +188,12 @@ return [
         'name' => [
             'en' => 'Tube',
             'hu' => 'Tubi',
-            'de' => 'Tube'
+            'de' => 'Tube',
         ],
         'short_name' => [
             'en' => 'tube',
             'hu' => 'tub',
-            'de' => 'Tube'
+            'de' => 'Tube',
         ],
     ],
     'bottle' => [
@@ -201,12 +201,12 @@ return [
         'name' => [
             'en' => 'Bottle',
             'hu' => 'Palack',
-            'de' => 'Flasche'
+            'de' => 'Flasche',
         ],
         'short_name' => [
             'en' => 'bt',
             'hu' => 'pal',
-            'de' => 'Fl'
+            'de' => 'Fl',
         ],
     ],
     'doz' => [
@@ -214,12 +214,12 @@ return [
         'name' => [
             'en' => 'Dozen',
             'hu' => 'Tucat',
-            'de' => 'Dutzend'
+            'de' => 'Dutzend',
         ],
         'short_name' => [
             'en' => 'dz',
             'hu' => 'tuc',
-            'de' => 'dz'
+            'de' => 'dz',
         ],
     ],
     'yd' => [
@@ -227,12 +227,12 @@ return [
         'name' => [
             'en' => 'Yard',
             'hu' => 'Yard',
-            'de' => 'Yard'
+            'de' => 'Yard',
         ],
         'short_name' => [
             'en' => 'yd',
             'hu' => 'yd',
-            'de' => 'yd'
+            'de' => 'yd',
         ],
     ],
     'ft' => [
@@ -240,12 +240,12 @@ return [
         'name' => [
             'en' => 'Foot',
             'hu' => 'Láb',
-            'de' => 'Fuß'
+            'de' => 'Fuß',
         ],
         'short_name' => [
             'en' => 'ft',
             'hu' => 'ft',
-            'de' => 'ft'
+            'de' => 'ft',
         ],
     ],
     'in' => [
@@ -253,12 +253,12 @@ return [
         'name' => [
             'en' => 'Inch',
             'hu' => 'Hüvelyk',
-            'de' => 'Zoll'
+            'de' => 'Zoll',
         ],
         'short_name' => [
             'en' => 'in',
             'hu' => 'in',
-            'de' => 'in'
+            'de' => 'in',
         ],
     ],
     'oz' => [
@@ -266,12 +266,12 @@ return [
         'name' => [
             'en' => 'Ounce',
             'hu' => 'Uncia',
-            'de' => 'Unze'
+            'de' => 'Unze',
         ],
         'short_name' => [
             'en' => 'oz',
             'hu' => 'oz',
-            'de' => 'oz'
+            'de' => 'oz',
         ],
     ],
     'lb' => [
@@ -279,12 +279,12 @@ return [
         'name' => [
             'en' => 'Pound',
             'hu' => 'Font',
-            'de' => 'Pfund'
+            'de' => 'Pfund',
         ],
         'short_name' => [
             'en' => 'lb',
             'hu' => 'lb',
-            'de' => 'lb'
+            'de' => 'lb',
         ],
     ],
     'sheet' => [
@@ -292,12 +292,12 @@ return [
         'name' => [
             'en' => 'Sheet',
             'hu' => 'Lap',
-            'de' => 'Blatt'
+            'de' => 'Blatt',
         ],
         'short_name' => [
             'en' => 'sh',
             'hu' => 'lap',
-            'de' => 'Bl.'
+            'de' => 'Bl.',
         ],
     ],
     'sqm' => [
@@ -305,12 +305,12 @@ return [
         'name' => [
             'en' => 'Square metre',
             'hu' => 'Négyzetméter',
-            'de' => 'Quadratmeter'
+            'de' => 'Quadratmeter',
         ],
         'short_name' => [
             'en' => 'm²',
             'hu' => 'm²',
-            'de' => 'm²'
+            'de' => 'm²',
         ],
     ],
     'sqcm' => [
@@ -318,12 +318,12 @@ return [
         'name' => [
             'en' => 'Square centimetre',
             'hu' => 'Négyzetcentiméter',
-            'de' => 'Quadratzentimeter'
+            'de' => 'Quadratzentimeter',
         ],
         'short_name' => [
             'en' => 'cm²',
             'hu' => 'cm²',
-            'de' => 'cm²'
+            'de' => 'cm²',
         ],
     ],
     'carton' => [
@@ -331,12 +331,12 @@ return [
         'name' => [
             'en' => 'Carton',
             'hu' => 'Karton',
-            'de' => 'Karton'
+            'de' => 'Karton',
         ],
         'short_name' => [
             'en' => 'ctn',
             'hu' => 'kart',
-            'de' => 'ctn'
+            'de' => 'ctn',
         ],
     ],
     'case' => [
@@ -344,12 +344,12 @@ return [
         'name' => [
             'en' => 'Case',
             'hu' => 'Doboz (eset)',
-            'de' => 'Case'
+            'de' => 'Case',
         ],
         'short_name' => [
             'en' => 'case',
             'hu' => 'db',
-            'de' => 'case'
+            'de' => 'case',
         ],
     ],
     'crate' => [
@@ -357,12 +357,12 @@ return [
         'name' => [
             'en' => 'Crate',
             'hu' => 'Láda',
-            'de' => 'Kiste'
+            'de' => 'Kiste',
         ],
         'short_name' => [
             'en' => 'crt',
             'hu' => 'láda',
-            'de' => 'kst'
+            'de' => 'kst',
         ],
     ],
     'pallet' => [
@@ -370,12 +370,12 @@ return [
         'name' => [
             'en' => 'Pallet',
             'hu' => 'Raklap',
-            'de' => 'Palette'
+            'de' => 'Palette',
         ],
         'short_name' => [
             'en' => 'plt',
             'hu' => 'rak',
-            'de' => 'plt'
+            'de' => 'plt',
         ],
     ],
     'bundle' => [
@@ -383,12 +383,12 @@ return [
         'name' => [
             'en' => 'Bundle',
             'hu' => 'Köteg',
-            'de' => 'Bündel'
+            'de' => 'Bündel',
         ],
         'short_name' => [
             'en' => 'bdl',
             'hu' => 'ktg',
-            'de' => 'bdl'
+            'de' => 'bdl',
         ],
     ],
     'sachet' => [
@@ -396,12 +396,12 @@ return [
         'name' => [
             'en' => 'Sachet',
             'hu' => 'Tasak',
-            'de' => 'Beutel'
+            'de' => 'Beutel',
         ],
         'short_name' => [
             'en' => 'sach',
             'hu' => 'ts',
-            'de' => 'btl'
+            'de' => 'btl',
         ],
     ],
     'tablet' => [
@@ -409,12 +409,12 @@ return [
         'name' => [
             'en' => 'Tablet',
             'hu' => 'Tabletta',
-            'de' => 'Tablette'
+            'de' => 'Tablette',
         ],
         'short_name' => [
             'en' => 'tab',
             'hu' => 'tbl',
-            'de' => 'tab'
+            'de' => 'tab',
         ],
     ],
     'capsule' => [
@@ -422,12 +422,12 @@ return [
         'name' => [
             'en' => 'Capsule',
             'hu' => 'Kapszula',
-            'de' => 'Kapsel'
+            'de' => 'Kapsel',
         ],
         'short_name' => [
             'en' => 'cap',
             'hu' => 'kps',
-            'de' => 'cap'
+            'de' => 'cap',
         ],
     ],
     'tray' => [
@@ -435,12 +435,12 @@ return [
         'name' => [
             'en' => 'Tray',
             'hu' => 'Tálca',
-            'de' => 'Tablett'
+            'de' => 'Tablett',
         ],
         'short_name' => [
             'en' => 'tray',
             'hu' => 'tál',
-            'de' => 'tray'
+            'de' => 'tray',
         ],
     ],
     'unit' => [
@@ -448,12 +448,12 @@ return [
         'name' => [
             'en' => 'Unit',
             'hu' => 'Egység',
-            'de' => 'Einheit'
+            'de' => 'Einheit',
         ],
         'short_name' => [
             'en' => 'u',
             'hu' => 'egys',
-            'de' => 'E'
+            'de' => 'E',
         ],
     ],
     'ea' => [
@@ -461,12 +461,12 @@ return [
         'name' => [
             'en' => 'Each',
             'hu' => 'Darab',
-            'de' => 'Stück'
+            'de' => 'Stück',
         ],
         'short_name' => [
             'en' => 'ea',
             'hu' => 'db',
-            'de' => 'Stk'
+            'de' => 'Stk',
         ],
     ],
     'ampoule' => [
@@ -474,12 +474,12 @@ return [
         'name' => [
             'en' => 'Ampoule',
             'hu' => 'Ampulla',
-            'de' => 'Ampulle'
+            'de' => 'Ampulle',
         ],
         'short_name' => [
             'en' => 'amp',
             'hu' => 'amp',
-            'de' => 'amp'
+            'de' => 'amp',
         ],
     ],
 ];

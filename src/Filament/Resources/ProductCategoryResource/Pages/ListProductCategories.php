@@ -5,7 +5,6 @@ namespace Molitor\Product\Filament\Resources\ProductCategoryResource\Pages;
 use Filament\Actions\Action;
 use Filament\Actions\CreateAction;
 use Filament\Resources\Pages\ListRecords;
-use Molitor\Product\Filament\Pages\ProductCategoriesPage;
 use Molitor\Product\Filament\Resources\ProductCategoryResource;
 
 class ListProductCategories extends ListRecords

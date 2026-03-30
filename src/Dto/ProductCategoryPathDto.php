@@ -7,11 +7,13 @@ use Molitor\Language\Dto\Multilingual;
 class ProductCategoryPathDto
 {
     public string $separator = '/';
+
     protected array $items = [];
 
     public function addProductCategory(Multilingual $item): static
     {
         $this->items[] = $item;
+
         return $this;
     }
 
@@ -27,38 +29,39 @@ class ProductCategoryPathDto
 
     public function setLength(int $length): bool
     {
-        if($length < 1) {
+        if ($length < 1) {
             return false;
         }
 
         $oldLength = $this->getLength();
-        if($length === $oldLength) {
+        if ($length === $oldLength) {
             return false;
         }
-        if($length > $oldLength) {
-            for($i = $this->getLength(); $i < $length; $i++) {
+        if ($length > $oldLength) {
+            for ($i = $this->getLength(); $i < $length; $i++) {
                 $this->addItem();
             }
-        }
-        else {
+        } else {
             $this->items = array_slice($this->items, 0, $length);
         }
+
         return true;
     }
 
     public function setArrayPath(string $language, array $path): bool
     {
         $length = count($path);
-        if($length === 0) {
+        if ($length === 0) {
             return false;
         }
 
-        if($length > $this->getLength()) {
+        if ($length > $this->getLength()) {
             $this->setLength($length);
         }
         foreach ($path as $index => $item) {
             $this->items[$index]->set($language, $item);
         }
+
         return true;
     }
 
@@ -68,6 +71,7 @@ class ProductCategoryPathDto
         foreach ($this->items as $item) {
             $path[] = $item->get($language);
         }
+
         return $path;
     }
 
@@ -81,15 +85,16 @@ class ProductCategoryPathDto
         return $this->get($language);
     }
 
-    public function getItem(int $index): Multilingual|null
+    public function getItem(int $index): ?Multilingual
     {
         return $this->items[$index] ?? null;
     }
 
     public function addItem(): Multilingual
     {
-        $item = new Multilingual();
+        $item = new Multilingual;
         $this->items[] = $item;
+
         return $item;
     }
 

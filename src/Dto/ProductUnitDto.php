@@ -9,15 +9,16 @@ class ProductUnitDto
 {
     use TranslatableDto;
 
-    public int|null $id = null;
+    public ?int $id = null;
 
     public Multilingual $name;
+
     public Multilingual $shortName;
 
     public function __construct()
     {
-        $this->name = new Multilingual();
-        $this->shortName = new Multilingual();
+        $this->name = new Multilingual;
+        $this->shortName = new Multilingual;
     }
 
     public function toArray(): array

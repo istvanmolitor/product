@@ -1,6 +1,6 @@
 <?php
 
-namespace Molitor\Product\database\seeders;
+namespace Molitor\Product\Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Arr;
@@ -15,7 +15,7 @@ class ProductCategorySeeder extends Seeder
      */
     public function run(): void
     {
-        $data = require_once(__DIR__ . '/data/categories.php');
+        $data = require_once __DIR__.'/data/categories.php';
 
         foreach ($data as $categoryData) {
             $this->createCategoryRecursive($categoryData, 0);
@@ -33,20 +33,20 @@ class ProductCategorySeeder extends Seeder
         $children = Arr::get($data, 'children', []);
 
         $category = $this->findExisting($names, $parentId);
-        if (!$category) {
-            $category = new ProductCategory();
+        if (! $category) {
+            $category = new ProductCategory;
             $category->parent_id = $parentId;
             // generate slug from preferred locale, ensure global uniqueness
             $baseName = $this->pickBaseName($names);
             $category->slug = $this->makeUniqueSlug(Str::slug($baseName));
             foreach ($names as $locale => $name) {
-                $category->setAttributeTranslation('name', (string)$name, (string)$locale);
+                $category->setAttributeTranslation('name', (string) $name, (string) $locale);
             }
             $category->save();
         } else {
             // ensure all provided translations are up to date
             foreach ($names as $locale => $name) {
-                $category->setAttributeTranslation('name', (string)$name, (string)$locale);
+                $category->setAttributeTranslation('name', (string) $name, (string) $locale);
             }
             $category->save();
         }
@@ -65,10 +65,11 @@ class ProductCategorySeeder extends Seeder
         $query->where(function ($q) use ($names) {
             foreach ($names as $name) {
                 $q->orWhereHas('translations', function ($qt) use ($name) {
-                    $qt->where('name', (string)$name);
+                    $qt->where('name', (string) $name);
                 });
             }
         });
+
         return $query->first();
     }
 
@@ -76,16 +77,17 @@ class ProductCategorySeeder extends Seeder
     {
         // Prefer Hungarian, then English, then German, then the first available
         foreach (['hu', 'en', 'de'] as $loc) {
-            if (!empty($names[$loc])) {
-                return (string)$names[$loc];
+            if (! empty($names[$loc])) {
+                return (string) $names[$loc];
             }
         }
         // fallback to any first value
         foreach ($names as $name) {
-            if (!empty($name)) {
-                return (string)$name;
+            if (! empty($name)) {
+                return (string) $name;
             }
         }
+
         return 'category';
     }
 
@@ -95,9 +97,10 @@ class ProductCategorySeeder extends Seeder
         $original = $slug;
         $i = 1;
         while (ProductCategory::query()->where('slug', $slug)->exists()) {
-            $slug = $original . '-' . $i;
+            $slug = $original.'-'.$i;
             $i++;
         }
+
         return $slug;
     }
 }

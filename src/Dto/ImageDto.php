@@ -10,13 +10,15 @@ class ImageDto
     use TranslatableDto;
 
     public string $url = '';
+
     public Multilingual $alt;
+
     public Multilingual $title;
 
     public function __construct()
     {
-        $this->alt = new Multilingual();
-        $this->title = new Multilingual();
+        $this->alt = new Multilingual;
+        $this->title = new Multilingual;
     }
 
     public function toArray(): array

@@ -19,4 +19,3 @@ class EditProductField extends EditRecord
         return __('product::common.edit');
     }
 }
-

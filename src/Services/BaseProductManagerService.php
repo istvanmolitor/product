@@ -4,9 +4,9 @@ namespace Molitor\Product\Services;
 
 use Illuminate\Database\Eloquent\Model;
 use Molitor\Currency\Repositories\CurrencyRepositoryInterface;
-use Molitor\Product\Dto\ProductFieldDto;
 use Molitor\Product\Dto\ImageDto;
 use Molitor\Product\Dto\ProductDto;
+use Molitor\Product\Dto\ProductFieldDto;
 use Molitor\Product\Dto\ProductUnitDto;
 use Molitor\Product\Models\ProductAttribute;
 use Molitor\Product\Models\ProductTranslation;
@@ -17,51 +17,47 @@ abstract class BaseProductManagerService
 {
     public function __construct(
         protected ProductAttributeRepositoryInterface $productAttributeRepository
-    )
-    {
-    }
+    ) {}
 
     public function saveDto(ProductDto $productDto): void
     {
         $model = $this->getModelByDro($productDto);
-        if(!$model) {
+        if (! $model) {
             $model = $this->getNewModel();
         }
         $this->saveProductModel($model, $productDto);
         $model->save();
     }
 
-
-    abstract public function getModelByDro(ProductDto $productDto): Model|null;
+    abstract public function getModelByDro(ProductDto $productDto): ?Model;
 
     abstract protected function getNewModel(): Model;
 
     protected function isActive(ProductDto $productDto): bool
     {
-        return (bool)$productDto->active;
+        return (bool) $productDto->active;
     }
 
-    protected function getCurrencyId(string|null $currencyCode): int
+    protected function getCurrencyId(?string $currencyCode): int
     {
-        if(empty($currencyCode)) {
+        if (empty($currencyCode)) {
             return app(CurrencyRepositoryInterface::class)->getDefaultId();
-        };
+        }
+
         return app(CurrencyRepositoryInterface::class)->getByCode($currencyCode)->id;
     }
 
     protected function getProductUnitId(ProductUnitDto $unit): int
     {
         $sortName = $unit->shortName->hu;
-        if(empty($sortName)) {
+        if (empty($sortName)) {
             return app(ProductUnitRepositoryInterface::class)->getDefaultId();
         }
+
         return app(ProductUnitRepositoryInterface::class)->findBySortName($sortName)->id;
     }
 
-    protected function addCategoryToModel(): void
-    {
-
-    }
+    protected function addCategoryToModel(): void {}
 
     public function saveProductModel(Model $model, ProductDto $productDto): void
     {
@@ -79,10 +75,7 @@ abstract class BaseProductManagerService
         $this->saveModelAttributes($model, $productDto);
     }
 
-    protected function attributeDtoToIds(ProductFieldDto $attributeDto): array
-    {
-
-    }
+    protected function attributeDtoToIds(ProductFieldDto $attributeDto): array {}
 
     abstract protected function saveModelAttributeIds(Model $model, array $attributeOptionIds): void;
 
@@ -98,24 +91,25 @@ abstract class BaseProductManagerService
 
     /***********************************************************************/
 
-    public function getDto(Model $product): ProductDTO
+    public function getDto(Model $product): ProductDto
     {
-        $productDto = new ProductDTO();
+        $productDto = new ProductDto;
         $this->setDefaults($productDto, $product);
         $this->setTranslations($productDto, $product);
         $this->setImages($productDto, $product);
         $this->setUnit($productDto, $product);
         $this->setAttributes($productDto, $product);
+
         return $productDto;
     }
 
-    protected function setDefaults(ProductDTO $productDto, Model $product): void
+    protected function setDefaults(ProductDto $productDto, Model $product): void
     {
         $productDto->price = $product->price;
         $productDto->currency = $product->currency;
     }
 
-    protected function setTranslations(ProductDTO $productDto, Model $product): void
+    protected function setTranslations(ProductDto $productDto, Model $product): void
     {
         /** @var ProductTranslation $translation */
         foreach ($product->translations as $translation) {
@@ -125,7 +119,7 @@ abstract class BaseProductManagerService
         }
     }
 
-    protected function setUnit(ProductDTO $productDto, Model $product): void
+    protected function setUnit(ProductDto $productDto, Model $product): void
     {
         foreach ($product->productUnit->translations as $translation) {
             $code = $translation->getCode();
@@ -134,9 +128,7 @@ abstract class BaseProductManagerService
         }
     }
 
-
-
-    public function setImages(ProductDTO $productDto, Model $product): void
+    public function setImages(ProductDto $productDto, Model $product): void
     {
         foreach ($product->productImages as $productImage) {
             $image = new ImageDto($productImage->url);
@@ -146,11 +138,11 @@ abstract class BaseProductManagerService
         }
     }
 
-    public function setAttributes(ProductDTO $productDto, Model $product): void
+    public function setAttributes(ProductDto $productDto, Model $product): void
     {
         /** @var ProductAttribute $productAttirbute */
         foreach ($product->productAttributes()->with('productFieldOption')->get() as $productAttirbute) {
-            $attribute = new ProductFieldDto();
+            $attribute = new ProductFieldDto;
 
             $option = $productAttirbute->productFieldOption;
             foreach ($option->translations as $translation) {

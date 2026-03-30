@@ -2,7 +2,6 @@
 
 namespace Molitor\Product\Filament\Resources\ProductCategoryResource\Pages;
 
-use Filament\Actions;
 use Filament\Resources\Pages\EditRecord;
 use Molitor\Product\Filament\Resources\ProductCategoryResource;
 

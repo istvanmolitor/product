@@ -43,14 +43,14 @@ class EditProduct extends EditRecord
         ProductAttribute::query()->where('product_id', $this->record->id)->delete();
 
         $rows = $this->data['product_attributes_form'] ?? [];
-        if (!is_array($rows)) {
+        if (! is_array($rows)) {
             return;
         }
 
         $seen = [];
         foreach ($rows as $row) {
             $optionId = $row['product_field_option_id'] ?? null;
-            if (!empty($optionId) && !isset($seen[$optionId])) {
+            if (! empty($optionId) && ! isset($seen[$optionId])) {
                 $seen[$optionId] = true;
                 ProductAttribute::create([
                     'product_id' => $this->record->id,

@@ -10,19 +10,18 @@ class ProductFieldDtoService
 {
     public function __construct(
         protected ProductFieldRepositoryInterface $productFieldRepository,
-    )
-    {
-    }
+    ) {}
 
     public function makeDto(ProductField $productField): ProductFieldDto
     {
-        $attributeDto = new ProductFieldDto();
-        if($productField->exists) {
+        $attributeDto = new ProductFieldDto;
+        if ($productField->exists) {
             $attributeDto->id = $productField->id;
         }
         $attributeDto->multiple = $productField->multiple;
         $attributeDto->name = $productField->getAttributeDto('name');
         $attributeDto->description = $productField->getAttributeDto('description');
+
         return $attributeDto;
     }
 
@@ -31,6 +30,7 @@ class ProductFieldDtoService
         $productField = $this->makeModel($productFieldDto);
         $this->fillModel($productField, $productFieldDto);
         $productField->save();
+
         return $productField;
     }
 
@@ -48,7 +48,7 @@ class ProductFieldDtoService
             return $productField;
         }
 
-        return new ProductField();
+        return new ProductField;
     }
 
     public function fillModel(ProductField $productField, ProductFieldDto $productFieldDto): void

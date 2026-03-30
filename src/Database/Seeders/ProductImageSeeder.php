@@ -1,6 +1,6 @@
 <?php
 
-namespace Molitor\Product\database\seeders;
+namespace Molitor\Product\Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Storage;
@@ -25,7 +25,9 @@ class ProductImageSeeder extends Seeder
         ];
 
         // Keep only those that exist
-        $sourceImages = array_values(array_filter($sourceImages, static function ($p) { return is_file($p); }));
+        $sourceImages = array_values(array_filter($sourceImages, static function ($p) {
+            return is_file($p);
+        }));
 
         if (empty($sourceImages)) {
             return; // no demo images available
@@ -37,23 +39,23 @@ class ProductImageSeeder extends Seeder
                 continue;
             }
 
-            $destDir = 'products/' . $product->id . '/images';
+            $destDir = 'products/'.$product->id.'/images';
 
             // Choose a random image to be the main image for this product
             $mainIndex = array_rand($sourceImages);
 
             foreach ($sourceImages as $index => $srcPath) {
-                $filename = 'image-' . ($index + 1) . '.png';
-                $destPath = $destDir . '/' . $filename;
+                $filename = 'image-'.($index + 1).'.png';
+                $destPath = $destDir.'/'.$filename;
 
-                if (!Storage::disk('public')->exists($destPath)) {
+                if (! Storage::disk('public')->exists($destPath)) {
                     $contents = @file_get_contents($srcPath);
                     if ($contents !== false) {
                         Storage::disk('public')->put($destPath, $contents);
                     }
                 }
 
-                $img = new ProductImage();
+                $img = new ProductImage;
                 $img->product_id = $product->id;
                 $img->is_main = ($index === $mainIndex);
                 $img->image = $destPath; // stored on public disk
@@ -61,7 +63,7 @@ class ProductImageSeeder extends Seeder
                 $img->sort = $index + 1;
 
                 // Translatable fields
-                $title = ($product->name ?? 'Termék') . ' kép ' . ($index + 1);
+                $title = ($product->name ?? 'Termék').' kép '.($index + 1);
                 $img->setAttributeTranslation('title', $title, 'hu');
                 $img->setAttributeTranslation('alt', $title, 'hu');
 
