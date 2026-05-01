@@ -253,4 +253,3 @@ class ProductUnitController extends Controller
         ]);
     }
 }
-

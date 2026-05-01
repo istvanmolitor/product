@@ -19,4 +19,3 @@ Route::prefix('admin/product')
         // Product Units
         Route::resource('product-units', ProductUnitController::class);
     });
-

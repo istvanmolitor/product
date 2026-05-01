@@ -22,4 +22,3 @@ class ProductUnitTranslationResource extends JsonResource
         ];
     }
 }
-

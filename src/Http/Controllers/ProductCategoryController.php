@@ -17,8 +17,7 @@ class ProductCategoryController extends Controller
     public function __construct(
         protected ProductCategoryRepositoryInterface $productCategoryRepository,
         protected LanguageRepositoryInterface $languageRepository
-    ) {
-    }
+    ) {}
 
     /**
      * Display a listing of the resource.
