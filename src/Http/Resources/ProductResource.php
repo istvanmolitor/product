@@ -19,6 +19,11 @@ use OpenApi\Attributes as OA;
         new OA\Property(property: 'price', type: 'number', format: 'float', example: 99.99),
         new OA\Property(property: 'active', type: 'boolean', example: true),
         new OA\Property(property: 'product_unit_id', type: 'integer', nullable: true),
+        new OA\Property(
+            property: 'product_images',
+            type: 'array',
+            items: new OA\Items(ref: '#/components/schemas/ProductImage')
+        ),
         new OA\Property(property: 'created_at', type: 'string', format: 'date-time'),
         new OA\Property(property: 'updated_at', type: 'string', format: 'date-time'),
     ]
@@ -45,6 +50,7 @@ class ProductResource extends JsonResource
             'updated_at' => $this->updated_at?->toDateTimeString(),
             'product_unit' => new ProductUnitSimpleResource($this->whenLoaded('productUnit')),
             'translations' => ProductTranslationResource::collection($this->whenLoaded('translations')),
+            'product_images' => ProductImageResource::collection($this->whenLoaded('productImages')),
         ];
     }
 }

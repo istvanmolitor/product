@@ -5,6 +5,7 @@ namespace Molitor\Product\Http\Controllers;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use Illuminate\Support\Facades\DB;
 use Molitor\Admin\Traits\HasAdminFilters;
 use Molitor\Product\Http\Requests\StoreProductRequest;
 use Molitor\Product\Http\Requests\UpdateProductRequest;
@@ -108,25 +109,33 @@ class ProductController extends Controller
     {
         $validated = $request->validated();
 
-        $product = Product::create([
-            'sku' => $validated['sku'],
-            'slug' => $validated['slug'] ?? null,
-            'price' => $validated['price'] ?? 0,
-            'active' => $validated['active'] ?? false,
-            'product_unit_id' => $validated['product_unit_id'] ?? null,
-        ]);
+        $product = DB::transaction(function () use ($validated): Product {
+            $product = Product::create([
+                'sku' => $validated['sku'],
+                'slug' => $validated['slug'] ?? null,
+                'price' => $validated['price'] ?? 0,
+                'active' => $validated['active'] ?? false,
+                'product_unit_id' => $validated['product_unit_id'] ?? null,
+            ]);
 
-        if (isset($validated['translations'])) {
-            foreach ($validated['translations'] as $languageId => $translation) {
-                $product->translations()->create([
-                    'language_id' => $languageId,
-                    'name' => $translation['name'] ?? '',
-                    'description' => $translation['description'] ?? null,
-                ]);
+            if (isset($validated['translations'])) {
+                foreach ($validated['translations'] as $languageId => $translation) {
+                    $product->translations()->create([
+                        'language_id' => $languageId,
+                        'name' => $translation['name'] ?? '',
+                        'description' => $translation['description'] ?? null,
+                    ]);
+                }
             }
-        }
 
-        $product->load(['productUnit', 'translations']);
+            if (array_key_exists('product_images', $validated)) {
+                $this->syncProductImages($product, $validated['product_images'] ?? []);
+            }
+
+            return $product;
+        });
+
+        $product->load(['productUnit', 'translations', 'productImages']);
 
         return response()->json([
             'data' => new ProductResource($product),
@@ -156,7 +165,7 @@ class ProductController extends Controller
     )]
     public function show(Product $product): JsonResponse
     {
-        $product->load(['productUnit', 'translations']);
+        $product->load(['productUnit', 'translations', 'productImages']);
 
         return response()->json([
             'data' => new ProductResource($product),
@@ -177,7 +186,7 @@ class ProductController extends Controller
     )]
     public function edit(Product $product): JsonResponse
     {
-        $product->load(['productUnit', 'translations']);
+        $product->load(['productUnit', 'translations', 'productImages']);
 
         return response()->json([
             'data' => new ProductResource($product),
@@ -215,27 +224,35 @@ class ProductController extends Controller
     {
         $validated = $request->validated();
 
-        $product->update([
-            'sku' => $validated['sku'],
-            'slug' => $validated['slug'] ?? $product->slug,
-            'price' => $validated['price'] ?? $product->price,
-            'active' => $validated['active'] ?? $product->active,
-            'product_unit_id' => $validated['product_unit_id'] ?? $product->product_unit_id,
-        ]);
+        $product = DB::transaction(function () use ($validated, $product): Product {
+            $product->update([
+                'sku' => $validated['sku'],
+                'slug' => $validated['slug'] ?? $product->slug,
+                'price' => $validated['price'] ?? $product->price,
+                'active' => $validated['active'] ?? $product->active,
+                'product_unit_id' => $validated['product_unit_id'] ?? $product->product_unit_id,
+            ]);
 
-        if (isset($validated['translations'])) {
-            foreach ($validated['translations'] as $languageId => $translation) {
-                $product->translations()->updateOrCreate(
-                    ['language_id' => $languageId],
-                    [
-                        'name' => $translation['name'] ?? '',
-                        'description' => $translation['description'] ?? null,
-                    ]
-                );
+            if (isset($validated['translations'])) {
+                foreach ($validated['translations'] as $languageId => $translation) {
+                    $product->translations()->updateOrCreate(
+                        ['language_id' => $languageId],
+                        [
+                            'name' => $translation['name'] ?? '',
+                            'description' => $translation['description'] ?? null,
+                        ]
+                    );
+                }
             }
-        }
 
-        $product->load(['productUnit', 'translations']);
+            if (array_key_exists('product_images', $validated)) {
+                $this->syncProductImages($product, $validated['product_images'] ?? []);
+            }
+
+            return $product;
+        });
+
+        $product->load(['productUnit', 'translations', 'productImages']);
 
         return response()->json([
             'data' => new ProductResource($product),
@@ -262,5 +279,35 @@ class ProductController extends Controller
         return response()->json([
             'message' => __('product::product.messages.deleted'),
         ]);
+    }
+
+    /**
+     * @param  array<int, array{image_url: string, is_main?: bool, sort?: int}>  $productImages
+     */
+    private function syncProductImages(Product $product, array $productImages): void
+    {
+        foreach ($product->productImages()->get() as $productImage) {
+            $productImage->delete();
+        }
+
+        if ($productImages === []) {
+            return;
+        }
+
+        $mainImageIndex = collect($productImages)->search(static function (array $productImage): bool {
+            return ($productImage['is_main'] ?? false) === true;
+        });
+
+        if ($mainImageIndex === false) {
+            $mainImageIndex = 0;
+        }
+
+        foreach ($productImages as $index => $productImage) {
+            $product->productImages()->create([
+                'image_url' => $productImage['image_url'],
+                'is_main' => $index === $mainImageIndex,
+                'sort' => $productImage['sort'] ?? $index,
+            ]);
+        }
     }
 }

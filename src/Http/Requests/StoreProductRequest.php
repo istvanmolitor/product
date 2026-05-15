@@ -18,6 +18,11 @@ use OpenApi\Attributes as OA;
         new OA\Property(property: 'active', type: 'boolean', example: true),
         new OA\Property(property: 'product_unit_id', type: 'integer', example: 1, nullable: true),
         new OA\Property(
+            property: 'product_images',
+            type: 'array',
+            items: new OA\Items(type: 'object')
+        ),
+        new OA\Property(
             property: 'translations',
             type: 'object',
             example: ['1' => ['name' => 'Product Name', 'description' => 'Product Description']]
@@ -47,6 +52,10 @@ class StoreProductRequest extends FormRequest
             'price' => 'nullable|numeric|min:0',
             'active' => 'boolean',
             'product_unit_id' => 'nullable|exists:product_units,id',
+            'product_images' => 'nullable|array',
+            'product_images.*.image_url' => 'required|string|max:2048',
+            'product_images.*.is_main' => 'nullable|boolean',
+            'product_images.*.sort' => 'nullable|integer|min:0',
             'translations' => 'nullable|array',
             'translations.*.name' => 'required|string|max:255',
             'translations.*.description' => 'nullable|string',
