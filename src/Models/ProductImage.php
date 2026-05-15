@@ -29,6 +29,10 @@ class ProductImage extends TranslatableModel
 
     public function getSrc(): ?string
     {
-        return $this->image ? asset('storage/'.ltrim($this->image, '/')) : null;
+        if ($this->image) {
+            return asset('storage/'.ltrim($this->image, '/'));
+        }
+
+        return $this->image_url ?: null;
     }
 }
