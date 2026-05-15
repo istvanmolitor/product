@@ -35,10 +35,11 @@ class ProductServiceProvider extends ServiceProvider
         $this->loadTranslationsFrom(__DIR__.'/../../resources/lang', 'product');
         $this->loadViewsFrom(__DIR__.'/../../resources/views', 'product');
 
-        // Load API routes with /api prefix
+        // Load web routes with /api prefix
         $this->app->make(Router::class)
             ->prefix('api')
-            ->group(__DIR__.'/../routes/api.php');
+            ->middleware('web')
+            ->group(__DIR__.'/../routes/web.php');
 
         ProductImage::observe(ProductImageObserver::class);
 

@@ -7,7 +7,7 @@ use Molitor\Product\Http\Controllers\ProductUnitController;
 
 // Admin routes
 Route::prefix('admin/product')
-    ->middleware(['api', 'auth:sanctum'])
+    ->middleware(['auth:sanctum'])
     ->name('product.')
     ->group(function () {
         // Products
