@@ -69,6 +69,75 @@ class ProductController extends Controller
     }
 
     #[OA\Get(
+        path: '/api/admin/product/products/select',
+        summary: 'Search products for select inputs',
+        tags: ['Products'],
+        parameters: [
+            new OA\Parameter(name: 'search', in: 'query', required: false, schema: new OA\Schema(type: 'string')),
+            new OA\Parameter(name: 'per_page', in: 'query', required: false, schema: new OA\Schema(type: 'integer', default: 20)),
+        ],
+        responses: [
+            new OA\Response(
+                response: 200,
+                description: 'Success',
+                content: new OA\JsonContent(
+                    properties: [
+                        new OA\Property(
+                            property: 'data',
+                            type: 'array',
+                            items: new OA\Items(ref: '#/components/schemas/Product')
+                        ),
+                        new OA\Property(
+                            property: 'meta',
+                            type: 'object',
+                            properties: [
+                                new OA\Property(property: 'current_page', type: 'integer'),
+                                new OA\Property(property: 'last_page', type: 'integer'),
+                                new OA\Property(property: 'per_page', type: 'integer'),
+                                new OA\Property(property: 'total', type: 'integer'),
+                            ]
+                        ),
+                    ]
+                )
+            ),
+        ]
+    )]
+    public function select(Request $request): JsonResponse
+    {
+        $search = trim((string) $request->input('search', ''));
+        $perPage = max(1, min(50, (int) $request->input('per_page', 20)));
+
+        $query = Product::query()->with(['productUnit', 'translations', 'productImages']);
+
+        if ($search !== '') {
+            $query->where(function ($query) use ($search): void {
+                $query->where('sku', 'like', '%'.$search.'%')
+                    ->orWhereHas('translations', function ($translationQuery) use ($search): void {
+                        $translationQuery->where('name', 'like', '%'.$search.'%');
+                    });
+            });
+        }
+
+        $products = $query
+            ->orderBy('sku')
+            ->paginate($perPage)
+            ->withQueryString();
+
+        return response()->json([
+            'data' => ProductResource::collection($products->items()),
+            'meta' => [
+                'current_page' => $products->currentPage(),
+                'last_page' => $products->lastPage(),
+                'per_page' => $products->perPage(),
+                'total' => $products->total(),
+            ],
+            'filters' => [
+                'search' => $search,
+            ],
+        ]);
+    }
+
+    #[OA\Get(
         path: '/api/admin/product/products/create',
         summary: 'Show form for creating a product',
         tags: ['Products'],

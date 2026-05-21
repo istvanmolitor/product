@@ -11,6 +11,7 @@ Route::prefix('admin/product')
     ->name('product.')
     ->group(function () {
         // Products
+        Route::get('products/select', [ProductController::class, 'select']);
         Route::resource('products', ProductController::class);
 
         // Product Categories
