@@ -4,6 +4,7 @@ namespace Molitor\Product\Http\Resources;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Molitor\Language\Http\Resources\TranslationsResource;
 use OpenApi\Attributes as OA;
 
 #[OA\Schema(
@@ -37,7 +38,7 @@ class ProductUnitResource extends JsonResource
             'enabled' => $this->enabled,
             'created_at' => $this->created_at?->toDateTimeString(),
             'updated_at' => $this->updated_at?->toDateTimeString(),
-            'translations' => ProductUnitTranslationResource::collection($this->whenLoaded('translations')),
+            'translations' => new TranslationsResource($this->getTranslations()),
         ];
     }
 }

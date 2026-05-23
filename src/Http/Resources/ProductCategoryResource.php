@@ -4,6 +4,7 @@ namespace Molitor\Product\Http\Resources;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Molitor\Language\Http\Resources\TranslationsResource;
 
 class ProductCategoryResource extends JsonResource
 {
@@ -24,7 +25,7 @@ class ProductCategoryResource extends JsonResource
             'image_url' => $this->image_url,
             'created_at' => $this->created_at?->toDateTimeString(),
             'updated_at' => $this->updated_at?->toDateTimeString(),
-            'translations' => ProductCategoryTranslationResource::collection($this->whenLoaded('translations')),
+            'translations' => new TranslationsResource($this->getTranslations()),
         ];
     }
 }
