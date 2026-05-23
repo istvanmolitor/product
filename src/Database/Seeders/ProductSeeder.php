@@ -3,7 +3,9 @@
 namespace Molitor\Product\Database\Seeders;
 
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Str;
 use Molitor\Product\Models\Product;
+use Molitor\Product\Models\ProductCategory;
 use Molitor\Product\Models\ProductUnit;
 use Molitor\User\Exceptions\PermissionException;
 use Molitor\User\Services\AclManagementService;
@@ -15,7 +17,7 @@ class ProductSeeder extends Seeder
      *
      * @return void
      */
-    public function run()
+    public function run(): void
     {
         try {
             /** @var AclManagementService $aclService */
@@ -42,23 +44,55 @@ class ProductSeeder extends Seeder
             $unit->save();
         }
 
-        // Seed product categories from data file (multi-language, multi-level)
         $this->call(ProductCategorySeeder::class);
 
         if (! app()->isLocal()) {
             return;
         }
 
-        // Seed product fields and options in a dedicated seeder
         $this->call(ProductFieldSeeder::class);
 
-        // In local environment we skip random category factories in favor of deterministic seeder above
+        $this->seedDemoProducts();
 
-        Product::factory(100)->create();
-
-        // After products are created, randomly assign attributes and seed images
         $this->call(ProductAttributeSeeder::class);
-        // Seed product images for the generated products
         $this->call(ProductImageSeeder::class);
+    }
+
+    private function seedDemoProducts(): void
+    {
+        $huFaker = fake('hu_HU');
+        $enFaker = fake('en_US');
+        $unitIds = ProductUnit::query()->pluck('id')->all();
+        $categoryIds = ProductCategory::query()->pluck('id')->all();
+
+        if (empty($unitIds)) {
+            return;
+        }
+
+        for ($index = 1; $index <= 10; $index++) {
+            $huName = sprintf('Teszt termék %02d', $index);
+            $enName = sprintf('Test product %02d', $index);
+            $sku = sprintf('DEMO-%04d', $index);
+
+            $product = Product::query()->create([
+                'active' => true,
+                'sku' => $sku,
+                'slug' => Str::slug($enName).'-'.$index,
+                'price' => $huFaker->randomFloat(2, 1000, 50000),
+                'product_unit_id' => $huFaker->randomElement($unitIds),
+            ]);
+
+            $product->setAttributeTranslation('name', $huName, 'hu');
+            $product->setAttributeTranslation('description', $huFaker->paragraph(2), 'hu');
+            $product->setAttributeTranslation('name', $enName, 'en');
+            $product->setAttributeTranslation('description', $enFaker->paragraph(2), 'en');
+            $product->save();
+
+            if (! empty($categoryIds)) {
+                $product->productCategories()->syncWithoutDetaching([
+                    $huFaker->randomElement($categoryIds),
+                ]);
+            }
+        }
     }
 }
