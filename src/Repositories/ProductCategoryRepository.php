@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Molitor\Product\Repositories;
 
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Str;
 use Molitor\Product\Events\ProductCategoryDestroyEvent;
 use Molitor\Product\Models\ProductCategory;
 
@@ -87,9 +88,13 @@ class ProductCategoryRepository implements ProductCategoryRepositoryInterface
             return $productCategory;
         }
 
-        return $this->productCategory->create([
-            'name' => $name,
-        ]);
+        $productCategory = new ProductCategory;
+        $productCategory->parent_id = 0;
+        $productCategory->slug = $this->makeUniqueSlug($name);
+        $productCategory->setAttribute('name', $name);
+        $productCategory->save();
+
+        return $productCategory;
     }
 
     public function getSubCategoryByName(ProductCategory $parent, string $name): ?ProductCategory
@@ -108,10 +113,35 @@ class ProductCategoryRepository implements ProductCategoryRepositoryInterface
             return $productCategory;
         }
 
-        return $this->productCategory->create([
-            'parent_id' => $parent->id,
-            'name' => $name,
-        ]);
+        $productCategory = new ProductCategory;
+        $productCategory->parent_id = $parent->id;
+        $productCategory->slug = $this->makeUniqueSlug($name);
+        $productCategory->setAttribute('name', $name);
+        $productCategory->save();
+
+        return $productCategory;
+    }
+
+    private function makeUniqueSlug(string $name): string
+    {
+        $baseSlug = Str::slug($name);
+        if ($baseSlug === '') {
+            $baseSlug = 'category';
+        }
+
+        $maxLength = 255;
+        $baseSlug = Str::limit($baseSlug, $maxLength, '');
+
+        $slug = $baseSlug;
+        $i = 2;
+
+        while ($this->productCategory->where('slug', $slug)->exists()) {
+            $suffix = '-'.$i;
+            $slug = Str::limit($baseSlug, $maxLength - strlen($suffix), '').$suffix;
+            $i++;
+        }
+
+        return $slug;
     }
 
     public function getPathCategories(ProductCategory $category): array
