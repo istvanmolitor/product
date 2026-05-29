@@ -249,4 +249,14 @@ class ProductCategoryRepository implements ProductCategoryRepositoryInterface
             'slug' => $slug,
         ]);
     }
+
+    public function update(ProductCategory $productCategory, ?int $parentId, ?string $slug): ProductCategory
+    {
+        $productCategory->update([
+            'parent_id' => $parentId ?? 0,
+            'slug' => $slug,
+        ]);
+
+        return $productCategory;
+    }
 }

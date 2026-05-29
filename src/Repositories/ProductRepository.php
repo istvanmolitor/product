@@ -133,4 +133,17 @@ class ProductRepository implements ProductRepositoryInterface
             'product_unit_id' => $productUnitId,
         ]);
     }
+
+    public function update(Product $product, string $sku, ?string $slug, float $price, bool $active, ?int $productUnitId): Product
+    {
+        $product->update([
+            'sku' => $sku,
+            'slug' => $slug,
+            'price' => $price,
+            'active' => $active,
+            'product_unit_id' => $productUnitId,
+        ]);
+
+        return $product;
+    }
 }

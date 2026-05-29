@@ -9,6 +9,7 @@ use Molitor\Language\Repositories\LanguageRepositoryInterface;
 use Molitor\Product\Http\Requests\StoreProductCategoryRequest;
 use Molitor\Product\Http\Requests\UpdateProductCategoryRequest;
 use Molitor\Product\Http\Resources\ProductCategoryResource;
+use Molitor\Product\Models\ProductCategory;
 use Molitor\Product\Repositories\ProductCategoryRepositoryInterface;
 
 class ProductCategoryController extends Controller
@@ -97,7 +98,13 @@ class ProductCategoryController extends Controller
      */
     public function update(UpdateProductCategoryRequest $request, ProductCategory $productCategory): JsonResponse
     {
-        $productCategory->update($request->validated());
+        $validated = $request->validated();
+
+        $productCategory = $this->productCategoryRepository->update(
+            $productCategory,
+            $validated['parent_id'] ?? null,
+            $validated['slug'] ?? null,
+        );
 
         if ($request->has('translations')) {
             foreach ($request->input('translations') as $languageId => $translation) {

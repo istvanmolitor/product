@@ -93,4 +93,14 @@ class ProductUnitRepository implements ProductUnitRepositoryInterface
             'enabled' => $enabled,
         ]);
     }
+
+    public function update(ProductUnit $productUnit, string $code, bool $enabled): ProductUnit
+    {
+        $productUnit->update([
+            'code' => $code,
+            'enabled' => $enabled,
+        ]);
+
+        return $productUnit;
+    }
 }

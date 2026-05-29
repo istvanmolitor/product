@@ -29,4 +29,6 @@ interface ProductUnitRepositoryInterface
     public function getByMultilingualSortName(Multilingual $shortName): ?ProductUnit;
 
     public function create(string $code, bool $enabled): ProductUnit;
+
+    public function update(ProductUnit $productUnit, string $code, bool $enabled): ProductUnit;
 }

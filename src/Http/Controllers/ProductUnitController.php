@@ -203,9 +203,15 @@ class ProductUnitController extends Controller
     )]
     public function update(UpdateProductUnitRequest $request, ProductUnit $productUnit): JsonResponse
     {
-        $productUnit->code = $request->code;
-        $productUnit->enabled = $request->enabled;
-        $productUnit->setRequestTranslations($request);
+        $validated = $request->validated();
+
+        $productUnit = $this->productUnitRepository->update(
+            $productUnit,
+            $validated['code'],
+            $validated['enabled'],
+        );
+
+        $productUnit->setRequestTranslations($validated);
         $productUnit->save();
 
         $productUnit->load('translations');

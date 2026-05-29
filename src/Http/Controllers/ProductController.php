@@ -292,13 +292,14 @@ class ProductController extends Controller
         $validated = $request->validated();
 
         $product = DB::transaction(function () use ($validated, $product): Product {
-            $product->update([
-                'sku' => $validated['sku'],
-                'slug' => $validated['slug'] ?? $product->slug,
-                'price' => $validated['price'] ?? $product->price,
-                'active' => $validated['active'] ?? $product->active,
-                'product_unit_id' => $validated['product_unit_id'] ?? $product->product_unit_id,
-            ]);
+            $product = $this->productRepository->update(
+                $product,
+                $validated['sku'],
+                $validated['slug'] ?? $product->slug,
+                (float) ($validated['price'] ?? $product->price),
+                (bool) ($validated['active'] ?? $product->active),
+                $validated['product_unit_id'] ?? $product->product_unit_id,
+            );
 
             if (isset($validated['translations'])) {
                 foreach ($validated['translations'] as $languageId => $translation) {
