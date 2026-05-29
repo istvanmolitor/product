@@ -205,24 +205,10 @@ class ProductUnitController extends Controller
     )]
     public function update(UpdateProductUnitRequest $request, ProductUnit $productUnit): JsonResponse
     {
-        $validated = $request->validated();
-
-        $productUnit->update([
-            'code' => $validated['code'],
-            'enabled' => $validated['enabled'] ?? $productUnit->enabled,
-        ]);
-
-        if (isset($validated['translations'])) {
-            foreach ($validated['translations'] as $languageId => $translation) {
-                $productUnit->translations()->updateOrCreate(
-                    ['language_id' => $languageId],
-                    [
-                        'name' => $translation['name'] ?? '',
-                        'short_name' => $translation['short_name'] ?? null,
-                    ]
-                );
-            }
-        }
+        $productUnit->code = $request->code;
+        $productUnit->enabled = $request->enabled;
+        $productUnit->setRequestTranslations($request);
+        $productUnit->save();
 
         $productUnit->load('translations');
 
