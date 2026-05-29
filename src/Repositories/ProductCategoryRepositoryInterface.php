@@ -40,4 +40,6 @@ interface ProductCategoryRepositoryInterface
     public function delete(ProductCategory $productCategory): bool;
 
     public function getOptions(): array;
+
+    public function create(?int $parentId, ?string $slug, array $validated): ProductCategory;
 }

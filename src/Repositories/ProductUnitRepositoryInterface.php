@@ -27,4 +27,6 @@ interface ProductUnitRepositoryInterface
     public function getById(?int $id): ?ProductUnit;
 
     public function getByMultilingualSortName(Multilingual $shortName): ?ProductUnit;
+
+    public function create(string $code, bool $enabled, array $validated): ProductUnit;
 }

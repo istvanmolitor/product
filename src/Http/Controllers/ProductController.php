@@ -13,11 +13,16 @@ use Molitor\Product\Http\Resources\ProductResource;
 use Molitor\Product\Http\Resources\ProductUnitSimpleResource;
 use Molitor\Product\Models\Product;
 use Molitor\Product\Models\ProductUnit;
+use Molitor\Product\Repositories\ProductRepositoryInterface;
 use OpenApi\Attributes as OA;
 
 class ProductController extends Controller
 {
     use HasAdminFilters;
+
+    public function __construct(
+        private ProductRepositoryInterface $productRepository
+    ) {}
 
     #[OA\Get(
         path: '/api/admin/product/products',
@@ -179,23 +184,14 @@ class ProductController extends Controller
         $validated = $request->validated();
 
         $product = DB::transaction(function () use ($validated): Product {
-            $product = Product::create([
-                'sku' => $validated['sku'],
-                'slug' => $validated['slug'] ?? null,
-                'price' => $validated['price'] ?? 0,
-                'active' => $validated['active'] ?? false,
-                'product_unit_id' => $validated['product_unit_id'] ?? null,
-            ]);
-
-            if (isset($validated['translations'])) {
-                foreach ($validated['translations'] as $languageId => $translation) {
-                    $product->translations()->create([
-                        'language_id' => $languageId,
-                        'name' => $translation['name'] ?? '',
-                        'description' => $translation['description'] ?? null,
-                    ]);
-                }
-            }
+            $product = $this->productRepository->create(
+                $validated['sku'],
+                $validated['slug'] ?? null,
+                (float) ($validated['price'] ?? 0),
+                (bool) ($validated['active'] ?? false),
+                $validated['product_unit_id'] ?? null,
+                $validated,
+            );
 
             if (array_key_exists('product_images', $validated)) {
                 $this->syncProductImages($product, $validated['product_images'] ?? []);

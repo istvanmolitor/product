@@ -10,11 +10,16 @@ use Molitor\Product\Http\Requests\StoreProductUnitRequest;
 use Molitor\Product\Http\Requests\UpdateProductUnitRequest;
 use Molitor\Product\Http\Resources\ProductUnitResource;
 use Molitor\Product\Models\ProductUnit;
+use Molitor\Product\Repositories\ProductUnitRepositoryInterface;
 use OpenApi\Attributes as OA;
 
 class ProductUnitController extends Controller
 {
     use HasAdminFilters;
+
+    public function __construct(
+        private ProductUnitRepositoryInterface $productUnitRepository
+    ) {}
 
     #[OA\Get(
         path: '/api/admin/product/product-units',
@@ -104,20 +109,11 @@ class ProductUnitController extends Controller
     {
         $validated = $request->validated();
 
-        $productUnit = ProductUnit::create([
-            'code' => $validated['code'],
-            'enabled' => $validated['enabled'] ?? true,
-        ]);
-
-        if (isset($validated['translations'])) {
-            foreach ($validated['translations'] as $languageId => $translation) {
-                $productUnit->translations()->create([
-                    'language_id' => $languageId,
-                    'name' => $translation['name'] ?? '',
-                    'short_name' => $translation['short_name'] ?? null,
-                ]);
-            }
-        }
+        $productUnit = $this->productUnitRepository->create(
+            $validated['code'],
+            $validated['enabled'] ?? true,
+            $validated,
+        );
 
         $productUnit->load('translations');
 

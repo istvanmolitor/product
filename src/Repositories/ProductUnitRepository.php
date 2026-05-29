@@ -85,4 +85,19 @@ class ProductUnitRepository implements ProductUnitRepositoryInterface
     {
         return $this->productUnit->whereMultilingual('short_name', $shortName)->first();
     }
+
+    public function create(string $code, bool $enabled, array $validated): ProductUnit
+    {
+        $productUnit = $this->productUnit->create([
+            'code' => $code,
+            'enabled' => $enabled,
+        ]);
+
+        if (isset($validated['translations'])) {
+            $productUnit->setRequestTranslations($validated);
+            $productUnit->save();
+        }
+
+        return $productUnit;
+    }
 }
