@@ -190,8 +190,10 @@ class ProductController extends Controller
                 (float) ($validated['price'] ?? 0),
                 (bool) ($validated['active'] ?? false),
                 $validated['product_unit_id'] ?? null,
-                $validated,
             );
+
+            $product->setRequestTranslations($validated);
+            $product->save();
 
             if (array_key_exists('product_images', $validated)) {
                 $this->syncProductImages($product, $validated['product_images'] ?? []);

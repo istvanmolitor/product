@@ -123,21 +123,14 @@ class ProductRepository implements ProductRepositoryInterface
         return $this->product->orderBy('sku')->cursor();
     }
 
-    public function create(string $sku, ?string $slug, float $price, bool $active, ?int $productUnitId, array $validated): Product
+    public function create(string $sku, ?string $slug, float $price, bool $active, ?int $productUnitId): Product
     {
-        $product = $this->product->create([
+        return $this->product->create([
             'sku' => $sku,
             'slug' => $slug,
             'price' => $price,
             'active' => $active,
             'product_unit_id' => $productUnitId,
         ]);
-
-        if (isset($validated['translations'])) {
-            $product->setRequestTranslations($validated);
-            $product->save();
-        }
-
-        return $product;
     }
 }

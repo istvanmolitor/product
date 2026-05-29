@@ -41,5 +41,5 @@ interface ProductCategoryRepositoryInterface
 
     public function getOptions(): array;
 
-    public function create(?int $parentId, ?string $slug, array $validated): ProductCategory;
+    public function create(?int $parentId, ?string $slug): ProductCategory;
 }

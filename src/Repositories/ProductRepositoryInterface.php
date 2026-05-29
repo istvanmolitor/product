@@ -32,5 +32,5 @@ interface ProductRepositoryInterface
 
     public function getAll(): LazyCollection;
 
-    public function create(string $sku, ?string $slug, float $price, bool $active, ?int $productUnitId, array $validated): Product;
+    public function create(string $sku, ?string $slug, float $price, bool $active, ?int $productUnitId): Product;
 }

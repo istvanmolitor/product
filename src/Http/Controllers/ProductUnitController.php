@@ -112,8 +112,10 @@ class ProductUnitController extends Controller
         $productUnit = $this->productUnitRepository->create(
             $validated['code'],
             $validated['enabled'] ?? true,
-            $validated,
         );
+
+        $productUnit->setRequestTranslations($validated);
+        $productUnit->save();
 
         $productUnit->load('translations');
 

@@ -242,18 +242,11 @@ class ProductCategoryRepository implements ProductCategoryRepositoryInterface
         return $this->getAll()->pluck('name', 'id')->toArray();
     }
 
-    public function create(?int $parentId, ?string $slug, array $validated): ProductCategory
+    public function create(?int $parentId, ?string $slug): ProductCategory
     {
-        $category = $this->productCategory->create([
+        return $this->productCategory->create([
             'parent_id' => $parentId ?? 0,
             'slug' => $slug,
         ]);
-
-        if (isset($validated['translations'])) {
-            $category->setRequestTranslations($validated);
-            $category->save();
-        }
-
-        return $category;
     }
 }

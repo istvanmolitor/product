@@ -54,8 +54,10 @@ class ProductCategoryController extends Controller
         $category = $this->productCategoryRepository->create(
             $validated['parent_id'] ?? null,
             $validated['slug'] ?? null,
-            $validated,
         );
+
+        $category->setRequestTranslations($validated);
+        $category->save();
 
         $this->productCategoryRepository->refreshLeftRight();
 
