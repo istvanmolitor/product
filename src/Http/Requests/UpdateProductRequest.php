@@ -4,6 +4,7 @@ namespace Molitor\Product\Http\Requests;
 
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Validation\Rule;
 use OpenApi\Attributes as OA;
 
@@ -37,7 +38,7 @@ class UpdateProductRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return true;
+        return Gate::allows('acl', 'product');
     }
 
     /**

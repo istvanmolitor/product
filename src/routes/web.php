@@ -11,12 +11,12 @@ Route::prefix('admin/product')
     ->name('product.')
     ->group(function () {
         // Products
-        Route::get('products/select', [ProductController::class, 'select']);
-        Route::resource('products', ProductController::class);
+        Route::get('products/select', [ProductController::class, 'select'])->middleware('permission:product');
+        Route::resource('products', ProductController::class)->middleware('permission:product');
 
         // Product Categories
-        Route::resource('product-categories', ProductCategoryController::class);
+        Route::resource('product-categories', ProductCategoryController::class)->middleware('permission:product');
 
         // Product Units
-        Route::resource('product-units', ProductUnitController::class);
+        Route::resource('product-units', ProductUnitController::class)->middleware('permission:product_unit');
     });
