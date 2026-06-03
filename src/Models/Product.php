@@ -64,7 +64,7 @@ class Product extends TranslatableModel
 
     public function getPrice(): Price
     {
-        return new Price($this->price, null);
+        return new Price((float) ($this->price ?? 0), null);
     }
 
     public function __toString(): string
