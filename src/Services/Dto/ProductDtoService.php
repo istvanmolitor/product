@@ -3,9 +3,11 @@
 namespace Molitor\Product\Services\Dto;
 
 use Molitor\Currency\Repositories\CurrencyRepositoryInterface;
+use Molitor\Product\Dto\ImageDto;
 use Molitor\Product\Dto\ProductDto;
 use Molitor\Product\Models\Product;
 use Molitor\Product\Models\ProductAttribute;
+use Molitor\Product\Models\ProductImage;
 use Molitor\Product\Repositories\ProductRepositoryInterface;
 
 class ProductDtoService
@@ -33,6 +35,15 @@ class ProductDtoService
             $productDto->addAttribute($this->productAttributeDtoService->makeDto($attribute));
         }
 
+        /** @var ProductImage $image */
+        foreach ($product->productImages as $image) {
+            $imageDto = new ImageDto;
+            $imageDto->url = $image->getSrc() ?? '';
+            $imageDto->alt = $image->getAttributeDto('alt');
+            $imageDto->title = $image->getAttributeDto('title');
+            $productDto->addImage($imageDto);
+        }
+
         return $productDto;
     }
 
@@ -41,6 +52,8 @@ class ProductDtoService
         $product = $this->makeModel($productDto);
         $this->fillModel($product, $productDto);
         $product->save();
+
+        $this->syncImages($product, $productDto);
 
         $this->productAttributeDtoService->updateProductAttributes($product);
 
@@ -74,5 +87,36 @@ class ProductDtoService
         $product->price = $productDto->price;
         $product->slug = $productDto->slug;
         $product->product_unit_id = $this->productUnitDtoService->saveDto($productDto->productUnit)->id;
+    }
+
+    private function syncImages(Product $product, ProductDto $productDto): void
+    {
+        $images = $productDto->getImages();
+        if ($images === []) {
+            return;
+        }
+
+        $existingImages = $product->productImages()->get()->keyBy('image_url');
+
+        foreach ($images as $index => $imageDto) {
+            $imageUrl = trim((string) $imageDto->url);
+            if ($imageUrl === '') {
+                continue;
+            }
+
+            /** @var ProductImage|null $productImage */
+            $productImage = $existingImages->get($imageUrl);
+            if (! $productImage) {
+                $productImage = new ProductImage;
+                $productImage->product_id = $product->id;
+                $productImage->image_url = $imageUrl;
+            }
+
+            $productImage->sort = $index;
+            $productImage->is_main = ($index === 0);
+            $productImage->setAttributeDto('alt', $imageDto->alt);
+            $productImage->setAttributeDto('title', $imageDto->title);
+            $productImage->save();
+        }
     }
 }
