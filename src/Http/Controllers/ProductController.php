@@ -112,7 +112,7 @@ class ProductController extends Controller
         $search = trim((string) $request->input('search', ''));
         $perPage = max(1, min(50, (int) $request->input('per_page', 20)));
 
-        $query = Product::query()->with(['productUnit', 'translations', 'productImages']);
+        $query = Product::query()->with(['productUnit', 'translations', 'productImages', 'productCategories']);
 
         if ($search !== '') {
             $query->where(function ($query) use ($search): void {
@@ -199,10 +199,14 @@ class ProductController extends Controller
                 $this->syncProductImages($product, $validated['product_images'] ?? []);
             }
 
+            if (array_key_exists('product_category_ids', $validated)) {
+                $product->productCategories()->sync($validated['product_category_ids'] ?? []);
+            }
+
             return $product;
         });
 
-        $product->load(['productUnit', 'translations', 'productImages']);
+        $product->load(['productUnit', 'translations', 'productImages', 'productCategories']);
 
         return response()->json([
             'data' => new ProductResource($product),
@@ -232,7 +236,7 @@ class ProductController extends Controller
     )]
     public function show(Product $product): JsonResponse
     {
-        $product->load(['productUnit', 'translations', 'productImages']);
+        $product->load(['productUnit', 'translations', 'productImages', 'productCategories']);
 
         return response()->json([
             'data' => new ProductResource($product),
@@ -253,7 +257,7 @@ class ProductController extends Controller
     )]
     public function edit(Product $product): JsonResponse
     {
-        $product->load(['productUnit', 'translations', 'productImages']);
+        $product->load(['productUnit', 'translations', 'productImages', 'productCategories']);
 
         return response()->json([
             'data' => new ProductResource($product),
@@ -317,10 +321,14 @@ class ProductController extends Controller
                 $this->syncProductImages($product, $validated['product_images'] ?? []);
             }
 
+            if (array_key_exists('product_category_ids', $validated)) {
+                $product->productCategories()->sync($validated['product_category_ids'] ?? []);
+            }
+
             return $product;
         });
 
-        $product->load(['productUnit', 'translations', 'productImages']);
+        $product->load(['productUnit', 'translations', 'productImages', 'productCategories']);
 
         return response()->json([
             'data' => new ProductResource($product),

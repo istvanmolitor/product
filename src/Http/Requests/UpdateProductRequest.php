@@ -20,6 +20,11 @@ use OpenApi\Attributes as OA;
         new OA\Property(property: 'active', type: 'boolean', example: true),
         new OA\Property(property: 'product_unit_id', type: 'integer', example: 1, nullable: true),
         new OA\Property(
+            property: 'product_category_ids',
+            type: 'array',
+            items: new OA\Items(type: 'integer')
+        ),
+        new OA\Property(
             property: 'product_images',
             type: 'array',
             items: new OA\Items(type: 'object')
@@ -66,6 +71,8 @@ class UpdateProductRequest extends FormRequest
             'price' => 'nullable|numeric|min:0',
             'active' => 'boolean',
             'product_unit_id' => 'nullable|exists:product_units,id',
+            'product_category_ids' => 'nullable|array',
+            'product_category_ids.*' => 'integer|distinct|exists:product_categories,id',
             'product_images' => 'nullable|array',
             'product_images.*.image_url' => 'required|string|max:2048',
             'product_images.*.is_main' => 'nullable|boolean',

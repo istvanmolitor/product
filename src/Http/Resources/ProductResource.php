@@ -52,6 +52,7 @@ class ProductResource extends JsonResource
             'product_unit' => new ProductUnitSimpleResource($this->whenLoaded('productUnit')),
             'translations' => new TranslationsResource($this->getTranslations()),
             'product_images' => ProductImageResource::collection($this->whenLoaded('productImages')),
+            'product_category_ids' => $this->whenLoaded('productCategories', fn (): array => $this->productCategories->pluck('id')->values()->all()),
         ];
     }
 }
