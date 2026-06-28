@@ -37,6 +37,14 @@ class ProductDataTable extends DataTable
             ->setLabel('Név')
             ->setSearchable()
             ->setOrderable();
+
+        $this->addColumn('price')
+            ->setLabel('Ár')
+            ->setOrderable();
+
+        $this->addColumn('active')
+            ->setLabel('Aktív')
+            ->setOrderable();
     }
 
     public function query(Builder $query): Builder
