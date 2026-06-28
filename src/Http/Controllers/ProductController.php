@@ -3,11 +3,11 @@
 namespace Molitor\Product\Http\Controllers;
 
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\DB;
 use Molitor\Product\DataTables\ProductDataTable;
+use Molitor\Product\DataTables\ProductSelectDataTable;
 use Molitor\Product\Http\Requests\StoreProductRequest;
 use Molitor\Product\Http\Requests\UpdateProductRequest;
 use Molitor\Product\Http\Resources\ProductResource;
@@ -15,7 +15,6 @@ use Molitor\Product\Http\Resources\ProductUnitSimpleResource;
 use Molitor\Product\Models\Product;
 use Molitor\Product\Models\ProductUnit;
 use Molitor\Product\Repositories\ProductRepositoryInterface;
-use OpenApi\Attributes as OA;
 
 class ProductController extends Controller
 {
@@ -28,39 +27,9 @@ class ProductController extends Controller
         return $dataTable->getResponse();
     }
 
-    public function select(Request $request): JsonResponse
+    public function select(ProductSelectDataTable $dataTable): AnonymousResourceCollection
     {
-        $search = trim((string) $request->input('search', ''));
-        $perPage = max(1, min(50, (int) $request->input('per_page', 20)));
-
-        $query = Product::query()->with(['productUnit', 'translations', 'productImages', 'productCategories']);
-
-        if ($search !== '') {
-            $query->where(function ($query) use ($search): void {
-                $query->where('sku', 'like', '%'.$search.'%')
-                    ->orWhereHas('translations', function ($translationQuery) use ($search): void {
-                        $translationQuery->where('name', 'like', '%'.$search.'%');
-                    });
-            });
-        }
-
-        $products = $query
-            ->orderBy('sku')
-            ->paginate($perPage)
-            ->withQueryString();
-
-        return response()->json([
-            'data' => ProductResource::collection($products->items()),
-            'meta' => [
-                'current_page' => $products->currentPage(),
-                'last_page' => $products->lastPage(),
-                'per_page' => $products->perPage(),
-                'total' => $products->total(),
-            ],
-            'filters' => [
-                'search' => $search,
-            ],
-        ]);
+        return $dataTable->getResponse();
     }
 
     public function create(): JsonResponse
