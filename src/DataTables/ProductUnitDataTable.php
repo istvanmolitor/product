@@ -35,6 +35,7 @@ class ProductUnitDataTable extends DataTable
 
         $this->addColumn('name')
             ->setLabel('Név')
+            ->setSearchable()
             ->setOrderable();
 
         $this->addColumn('short_name')
@@ -46,6 +47,6 @@ class ProductUnitDataTable extends DataTable
 
     public function query(Builder $query): Builder
     {
-        return $query->with('translations');
+        return $query->joinTranslation()->selectBase();
     }
 }
