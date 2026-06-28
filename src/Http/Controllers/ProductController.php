@@ -4,9 +4,10 @@ namespace Molitor\Product\Http\Controllers;
 
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\DB;
-use Molitor\Admin\Traits\HasAdminFilters;
+use Molitor\Product\DataTables\ProductDataTable;
 use Molitor\Product\Http\Requests\StoreProductRequest;
 use Molitor\Product\Http\Requests\UpdateProductRequest;
 use Molitor\Product\Http\Resources\ProductResource;
@@ -18,29 +19,13 @@ use OpenApi\Attributes as OA;
 
 class ProductController extends Controller
 {
-    use HasAdminFilters;
-
     public function __construct(
         private ProductRepositoryInterface $productRepository
     ) {}
 
-    public function index(Request $request): JsonResponse
+    public function index(ProductDataTable $dataTable): AnonymousResourceCollection
     {
-        $query = Product::with(['productUnit', 'translations']);
-        $products = $this->applyAdminFilters($query, $request, ['sku', 'name'])
-            ->paginate(10)
-            ->withQueryString();
-
-        return response()->json([
-            'data' => ProductResource::collection($products->items()),
-            'meta' => [
-                'current_page' => $products->currentPage(),
-                'last_page' => $products->lastPage(),
-                'per_page' => $products->perPage(),
-                'total' => $products->total(),
-            ],
-            'filters' => $request->only(['search', 'sort', 'direction']),
-        ]);
+        return $dataTable->getResponse();
     }
 
     public function select(Request $request): JsonResponse
