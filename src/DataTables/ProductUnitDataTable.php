@@ -39,7 +39,9 @@ class ProductUnitDataTable extends DataTable
             ->setOrderable();
 
         $this->addColumn('short_name')
-            ->setLabel('Rövid név');
+            ->setLabel('Rövid név')
+            ->setSearchable()
+            ->setOrderable();
 
         $this->addColumn('enabled')
             ->setLabel('Státusz');
