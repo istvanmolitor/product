@@ -21,6 +21,11 @@ class ProductDataTable extends DataTable
         return ProductResource::class;
     }
 
+    protected function getSearchPlaceholder(): string
+    {
+        return 'Keresés SKU vagy név alapján...';
+    }
+
     protected function initColumns(): void
     {
         $this->addColumn('sku')
