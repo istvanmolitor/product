@@ -24,36 +24,6 @@ class ProductController extends Controller
         private ProductRepositoryInterface $productRepository
     ) {}
 
-    #[OA\Get(
-        path: '/api/admin/product/products',
-        summary: 'List all products',
-        tags: ['Products'],
-        responses: [
-            new OA\Response(
-                response: 200,
-                description: 'Success',
-                content: new OA\JsonContent(
-                    properties: [
-                        new OA\Property(
-                            property: 'data',
-                            type: 'array',
-                            items: new OA\Items(ref: '#/components/schemas/Product')
-                        ),
-                        new OA\Property(
-                            property: 'meta',
-                            type: 'object',
-                            properties: [
-                                new OA\Property(property: 'current_page', type: 'integer'),
-                                new OA\Property(property: 'last_page', type: 'integer'),
-                                new OA\Property(property: 'per_page', type: 'integer'),
-                                new OA\Property(property: 'total', type: 'integer'),
-                            ]
-                        ),
-                    ]
-                )
-            ),
-        ]
-    )]
     public function index(Request $request): JsonResponse
     {
         $query = Product::with(['productUnit', 'translations']);
@@ -73,40 +43,6 @@ class ProductController extends Controller
         ]);
     }
 
-    #[OA\Get(
-        path: '/api/admin/product/products/select',
-        summary: 'Search products for select inputs',
-        tags: ['Products'],
-        parameters: [
-            new OA\Parameter(name: 'search', in: 'query', required: false, schema: new OA\Schema(type: 'string')),
-            new OA\Parameter(name: 'per_page', in: 'query', required: false, schema: new OA\Schema(type: 'integer', default: 20)),
-        ],
-        responses: [
-            new OA\Response(
-                response: 200,
-                description: 'Success',
-                content: new OA\JsonContent(
-                    properties: [
-                        new OA\Property(
-                            property: 'data',
-                            type: 'array',
-                            items: new OA\Items(ref: '#/components/schemas/Product')
-                        ),
-                        new OA\Property(
-                            property: 'meta',
-                            type: 'object',
-                            properties: [
-                                new OA\Property(property: 'current_page', type: 'integer'),
-                                new OA\Property(property: 'last_page', type: 'integer'),
-                                new OA\Property(property: 'per_page', type: 'integer'),
-                                new OA\Property(property: 'total', type: 'integer'),
-                            ]
-                        ),
-                    ]
-                )
-            ),
-        ]
-    )]
     public function select(Request $request): JsonResponse
     {
         $search = trim((string) $request->input('search', ''));
@@ -142,14 +78,6 @@ class ProductController extends Controller
         ]);
     }
 
-    #[OA\Get(
-        path: '/api/admin/product/products/create',
-        summary: 'Show form for creating a product',
-        tags: ['Products'],
-        responses: [
-            new OA\Response(response: 200, description: 'Success'),
-        ]
-    )]
     public function create(): JsonResponse
     {
         return response()->json([
@@ -157,28 +85,6 @@ class ProductController extends Controller
         ]);
     }
 
-    #[OA\Post(
-        path: '/api/admin/product/products',
-        summary: 'Store a new product',
-        tags: ['Products'],
-        requestBody: new OA\RequestBody(
-            required: true,
-            content: new OA\JsonContent(ref: '#/components/schemas/StoreProductRequest')
-        ),
-        responses: [
-            new OA\Response(
-                response: 201,
-                description: 'Created',
-                content: new OA\JsonContent(
-                    properties: [
-                        new OA\Property(property: 'data', ref: '#/components/schemas/Product'),
-                        new OA\Property(property: 'message', type: 'string'),
-                    ]
-                )
-            ),
-            new OA\Response(response: 422, description: 'Validation error'),
-        ]
-    )]
     public function store(StoreProductRequest $request): JsonResponse
     {
         $validated = $request->validated();
@@ -214,26 +120,6 @@ class ProductController extends Controller
         ], 201);
     }
 
-    #[OA\Get(
-        path: '/api/admin/product/products/{product}',
-        summary: 'Display a specific product',
-        tags: ['Products'],
-        parameters: [
-            new OA\Parameter(name: 'product', in: 'path', required: true, schema: new OA\Schema(type: 'integer')),
-        ],
-        responses: [
-            new OA\Response(
-                response: 200,
-                description: 'Success',
-                content: new OA\JsonContent(
-                    properties: [
-                        new OA\Property(property: 'data', ref: '#/components/schemas/Product'),
-                    ]
-                )
-            ),
-            new OA\Response(response: 404, description: 'Not found'),
-        ]
-    )]
     public function show(Product $product): JsonResponse
     {
         $product->load(['productUnit', 'translations', 'productImages', 'productCategories']);
@@ -243,18 +129,6 @@ class ProductController extends Controller
         ]);
     }
 
-    #[OA\Get(
-        path: '/api/admin/product/products/{product}/edit',
-        summary: 'Show form for editing a product',
-        tags: ['Products'],
-        parameters: [
-            new OA\Parameter(name: 'product', in: 'path', required: true, schema: new OA\Schema(type: 'integer')),
-        ],
-        responses: [
-            new OA\Response(response: 200, description: 'Success'),
-            new OA\Response(response: 404, description: 'Not found'),
-        ]
-    )]
     public function edit(Product $product): JsonResponse
     {
         $product->load(['productUnit', 'translations', 'productImages', 'productCategories']);
@@ -265,32 +139,6 @@ class ProductController extends Controller
         ]);
     }
 
-    #[OA\Put(
-        path: '/api/admin/product/products/{product}',
-        summary: 'Update a product',
-        tags: ['Products'],
-        parameters: [
-            new OA\Parameter(name: 'product', in: 'path', required: true, schema: new OA\Schema(type: 'integer')),
-        ],
-        requestBody: new OA\RequestBody(
-            required: true,
-            content: new OA\JsonContent(ref: '#/components/schemas/UpdateProductRequest')
-        ),
-        responses: [
-            new OA\Response(
-                response: 200,
-                description: 'Success',
-                content: new OA\JsonContent(
-                    properties: [
-                        new OA\Property(property: 'data', ref: '#/components/schemas/Product'),
-                        new OA\Property(property: 'message', type: 'string'),
-                    ]
-                )
-            ),
-            new OA\Response(response: 422, description: 'Validation error'),
-            new OA\Response(response: 404, description: 'Not found'),
-        ]
-    )]
     public function update(UpdateProductRequest $request, Product $product): JsonResponse
     {
         $validated = $request->validated();
@@ -336,18 +184,6 @@ class ProductController extends Controller
         ]);
     }
 
-    #[OA\Delete(
-        path: '/api/admin/product/products/{product}',
-        summary: 'Delete a product',
-        tags: ['Products'],
-        parameters: [
-            new OA\Parameter(name: 'product', in: 'path', required: true, schema: new OA\Schema(type: 'integer')),
-        ],
-        responses: [
-            new OA\Response(response: 200, description: 'Success'),
-            new OA\Response(response: 404, description: 'Not found'),
-        ]
-    )]
     public function destroy(Product $product): JsonResponse
     {
         $product->delete();
@@ -356,10 +192,7 @@ class ProductController extends Controller
             'message' => __('product::product.messages.deleted'),
         ]);
     }
-
-    /**
-     * @param  array<int, array{image_url: string, is_main?: bool, sort?: int}>  $productImages
-     */
+    
     private function syncProductImages(Product $product, array $productImages): void
     {
         foreach ($product->productImages()->get() as $productImage) {
