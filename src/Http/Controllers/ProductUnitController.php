@@ -4,8 +4,9 @@ namespace Molitor\Product\Http\Controllers;
 
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Routing\Controller;
-use Molitor\Admin\Traits\HasAdminFilters;
+use Molitor\Product\DataTables\ProductUnitDataTable;
 use Molitor\Product\Http\Requests\StoreProductUnitRequest;
 use Molitor\Product\Http\Requests\UpdateProductUnitRequest;
 use Molitor\Product\Http\Resources\ProductUnitResource;
@@ -15,8 +16,6 @@ use OpenApi\Attributes as OA;
 
 class ProductUnitController extends Controller
 {
-    use HasAdminFilters;
-
     public function __construct(
         private ProductUnitRepositoryInterface $productUnitRepository
     ) {}
@@ -51,23 +50,9 @@ class ProductUnitController extends Controller
             ),
         ]
     )]
-    public function index(Request $request): JsonResponse
+    public function index(ProductUnitDataTable $dataTable): AnonymousResourceCollection
     {
-        $query = ProductUnit::with('translations');
-        $productUnits = $this->applyAdminFilters($query, $request, ['code', 'name'])
-            ->paginate(10)
-            ->withQueryString();
-
-        return response()->json([
-            'data' => ProductUnitResource::collection($productUnits->items()),
-            'meta' => [
-                'current_page' => $productUnits->currentPage(),
-                'last_page' => $productUnits->lastPage(),
-                'per_page' => $productUnits->perPage(),
-                'total' => $productUnits->total(),
-            ],
-            'filters' => $request->only(['search', 'sort', 'direction']),
-        ]);
+        return $dataTable->getResponse();
     }
 
     #[OA\Get(
