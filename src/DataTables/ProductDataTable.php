@@ -28,6 +28,9 @@ class ProductDataTable extends DataTable
 
     protected function initColumns(): void
     {
+        $this->addColumn('image')
+            ->setLabel('Kép');
+
         $this->addColumn('sku')
             ->setLabel('SKU')
             ->setSearchable()
@@ -52,6 +55,6 @@ class ProductDataTable extends DataTable
         return $query
             ->joinTranslation()
             ->selectBase()
-            ->with(['productUnit', 'translations']);
+            ->with(['productUnit', 'translations', 'productImages']);
     }
 }
