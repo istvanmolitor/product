@@ -15,11 +15,14 @@ use Molitor\Product\Http\Resources\ProductUnitSimpleResource;
 use Molitor\Product\Models\Product;
 use Molitor\Product\Models\ProductUnit;
 use Molitor\Product\Repositories\ProductRepositoryInterface;
+use Molitor\Currency\Http\Resources\CurrencyResource;
+use Molitor\Currency\Repositories\CurrencyRepositoryInterface;
 
 class ProductController extends Controller
 {
     public function __construct(
-        private ProductRepositoryInterface $productRepository
+        private ProductRepositoryInterface $productRepository,
+        private CurrencyRepositoryInterface $currencyRepository
     ) {}
 
     public function index(ProductDataTable $dataTable): AnonymousResourceCollection
@@ -36,6 +39,7 @@ class ProductController extends Controller
     {
         return response()->json([
             'product_units' => ProductUnitSimpleResource::collection(ProductUnit::all()),
+            'default_currency' => $this->getDefaultCurrencyResource(),
         ]);
     }
 
@@ -90,6 +94,7 @@ class ProductController extends Controller
         return response()->json([
             'data' => new ProductResource($product),
             'product_units' => ProductUnitSimpleResource::collection(ProductUnit::all()),
+            'default_currency' => $this->getDefaultCurrencyResource(),
         ]);
     }
 
@@ -147,6 +152,13 @@ class ProductController extends Controller
         ]);
     }
     
+    private function getDefaultCurrencyResource(): ?CurrencyResource
+    {
+        $defaultCurrency = $this->currencyRepository->getDefault();
+
+        return $defaultCurrency ? new CurrencyResource($defaultCurrency) : null;
+    }
+
     private function syncProductImages(Product $product, array $productImages): void
     {
         foreach ($product->productImages()->get() as $productImage) {
