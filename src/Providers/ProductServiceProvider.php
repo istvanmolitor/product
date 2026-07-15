@@ -26,6 +26,8 @@ use Molitor\Product\Repositories\ProductRepository;
 use Molitor\Product\Repositories\ProductRepositoryInterface;
 use Molitor\Product\Repositories\ProductUnitRepository;
 use Molitor\Product\Repositories\ProductUnitRepositoryInterface;
+use Molitor\Product\Services\ProductSettingForm;
+use Molitor\Setting\Services\SettingHandler;
 
 class ProductServiceProvider extends ServiceProvider
 {
@@ -34,6 +36,10 @@ class ProductServiceProvider extends ServiceProvider
         $this->loadMigrationsFrom(__DIR__.'/../Database/Migrations');
         $this->loadTranslationsFrom(__DIR__.'/../../resources/lang', 'product');
         $this->loadViewsFrom(__DIR__.'/../../resources/views', 'product');
+
+        if ($this->app->bound(SettingHandler::class)) {
+            $this->app->make(SettingHandler::class)->registerSettingForm(ProductSettingForm::class);
+        }
 
         // Load web routes with /api prefix
         $this->app->make(Router::class)

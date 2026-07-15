@@ -18,6 +18,7 @@ use OpenApi\Attributes as OA;
         new OA\Property(property: 'name', type: 'string', example: 'Product Name'),
         new OA\Property(property: 'description', type: 'string', nullable: true),
         new OA\Property(property: 'price', type: 'number', format: 'float', example: 99.99),
+        new OA\Property(property: 'price_formatted', type: 'string', example: '99.99 Ft'),
         new OA\Property(property: 'active', type: 'boolean', example: true),
         new OA\Property(property: 'product_unit_id', type: 'integer', nullable: true),
         new OA\Property(
@@ -45,6 +46,7 @@ class ProductResource extends JsonResource
             'name' => $this->name,
             'description' => $this->description,
             'price' => $this->price,
+            'price_formatted' => (string) price((float) $this->price, null),
             'active' => $this->active,
             'product_unit_id' => $this->product_unit_id,
             'created_at' => $this->created_at?->toDateTimeString(),
