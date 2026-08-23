@@ -1,6 +1,6 @@
 {
     "name": "istvanmolitor/product",
-    "description": "Product",
+    "description": "Product catalog management with categories, units, custom fields, images, and barcodes for the Molitor package suite.",
     "type": "library",
     "license": "MIT",
     "authors": [
