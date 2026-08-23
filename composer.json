@@ -11,6 +11,7 @@
     ],
     "minimum-stability": "dev",
     "require": {
+        "istvanmolitor/blade-ui": "*@dev",
         "istvanmolitor/currency": "*@dev"
     },
     "autoload": {

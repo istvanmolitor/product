@@ -9,15 +9,15 @@
                         type="button"
                     >
                         @if($isOpen)
-                            <x-heroicon-o-chevron-down class="w-4 h-4 text-gray-500" />
+                            <x-ui::layout.icon name="chevron-down" class="w-4 h-4 text-gray-500" />
                         @else
-                            <x-heroicon-o-chevron-right class="w-4 h-4 text-gray-500" />
+                            <x-ui::layout.icon name="chevron-right" class="w-4 h-4 text-gray-500" />
                         @endif
                     </button>
-                    <x-heroicon-o-folder class="w-5 h-5 text-amber-500" />
+                    <x-ui::layout.icon name="folder" class="w-5 h-5 text-amber-500" />
                 @else
                     <div class="w-6"></div>
-                    <x-heroicon-o-tag class="w-5 h-5 text-gray-400" />
+                    <x-ui::layout.icon name="tag" class="w-5 h-5 text-gray-400" />
                 @endif
 
                 <div class="flex-1">
@@ -46,7 +46,7 @@
                     class="p-2 text-gray-500 hover:text-primary-600 dark:hover:text-primary-400 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors"
                     title="Szerkesztés"
                 >
-                    <x-heroicon-o-pencil class="w-4 h-4" />
+                    <x-ui::layout.icon name="pencil" class="w-4 h-4" />
                 </a>
             </div>
         </div>
